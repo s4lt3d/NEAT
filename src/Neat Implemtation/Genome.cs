@@ -65,7 +65,7 @@ namespace Neat_Implemtation
 
             // no self connections
             int k = 0; // prevents runaway
-            while (n1 == n2 && k++ < 10) { 
+            while (n1 == n2 && k++ < 10 && containsConnection(n1, n2) == true) { 
                 n2 = r.Next(0, nodes.Count);
             }
 
@@ -84,11 +84,11 @@ namespace Neat_Implemtation
                 n1 = n2;
                 n2 = swap;
             }
-
-
-
+            
             // cases which are not allowed.  
             if (n1 == n2)
+                return;
+            if (containsConnection(n1, n2))
                 return;
             else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.INPUT_NODE)
                 return;
@@ -98,7 +98,6 @@ namespace Neat_Implemtation
                 return;
             else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.BIAS_NODE)
                 return;
-
             
             float w = (float)(r.NextDouble() * 2 - 1);
             ConnectionGene connection = new ConnectionGene(n1, n2, w, true, n1);
