@@ -7,22 +7,22 @@ namespace Neat_Implemtation
     {
         List<ConnectionGene> connections = new List<ConnectionGene>();
         List<NodeGene> nodes = new List<NodeGene>();
-        int nodeNumber = 0;
+        int globalInnovationNumber = 0;
 
         public Genome() {
-            NodeGene bias = new NodeGene(NodeGene.NodeType.BIAS_NODE, nodeNumber++);
-            NodeGene n2 = new NodeGene(NodeGene.NodeType.OUTPUT_NODE, nodeNumber++);
-            NodeGene n3 = new NodeGene(NodeGene.NodeType.INPUT_NODE, nodeNumber++);
-            NodeGene n4 = new NodeGene(NodeGene.NodeType.INPUT_NODE, nodeNumber++);
+            NodeGene bias = new NodeGene(NodeGene.NodeType.BIAS_NODE, globalInnovationNumber++);
+            NodeGene n2 = new NodeGene(NodeGene.NodeType.OUTPUT_NODE, globalInnovationNumber++);
+            NodeGene n3 = new NodeGene(NodeGene.NodeType.INPUT_NODE, globalInnovationNumber++);
+            NodeGene n4 = new NodeGene(NodeGene.NodeType.INPUT_NODE, globalInnovationNumber++);
 
             nodes.Add(bias);
             nodes.Add(n2);
             nodes.Add(n3);
             nodes.Add(n4);
 
-            ConnectionGene c1 = new ConnectionGene(0, 1, -1, true, 0);
-            ConnectionGene c2 = new ConnectionGene(2, 1, 2, true, 0);
-            ConnectionGene c3 = new ConnectionGene(3, 1, 3, true, 0);
+            ConnectionGene c1 = new ConnectionGene(0, 1, -1, true, globalInnovationNumber++);
+            ConnectionGene c2 = new ConnectionGene(2, 1, 2, true, globalInnovationNumber++);
+            ConnectionGene c3 = new ConnectionGene(3, 1, 3, true, globalInnovationNumber++);
 
             connections.Add(c1);
             connections.Add(c2);
@@ -39,6 +39,13 @@ namespace Neat_Implemtation
             }
         }
 
+
+        /// <summary>
+        /// Does the connection list contain a link between two nodes?
+        /// </summary>
+        /// <param name="node1"></param>
+        /// <param name="node2"></param>
+        /// <returns></returns>
         public bool containsConnection(int node1, int node2) {
             foreach (ConnectionGene c in connections) {
                 // else may be trimmed, but leaving for debugging issues
@@ -112,7 +119,7 @@ namespace Neat_Implemtation
         /// <param name="r"></param>
         public void addNode(Random r) {
             int c = r.Next(0, connections.Count); // (from 0 and count -1)
-            NodeGene newNode = new NodeGene(NodeGene.NodeType.HIDDEN_NODE, nodeNumber++);
+            NodeGene newNode = new NodeGene(NodeGene.NodeType.HIDDEN_NODE, globalInnovationNumber++);
             int newNodeNumber = nodes.Count;
             nodes.Add(newNode);
 
