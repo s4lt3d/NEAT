@@ -42,6 +42,18 @@ namespace Neat_Implemtation
             }
         }
 
+        public bool containsConnection(int node1, int node2) {
+            foreach (ConnectionGene c in connections) {
+                // else may be trimmed, but leaving for debugging issues
+                if (c.InNode == node1 && c.OutNode == node2)
+                    return true;
+                else if (c.OutNode == node1 && c.InNode == node2)
+                    return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// In the add connection mutation, a single new connection gene with a 
         /// random weight is added connecting two previously unconnected nodes.
@@ -72,6 +84,8 @@ namespace Neat_Implemtation
                 n1 = n2;
                 n2 = swap;
             }
+
+
 
             // cases which are not allowed.  
             if (n1 == n2)
