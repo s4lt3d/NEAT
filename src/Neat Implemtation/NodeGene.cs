@@ -19,6 +19,10 @@
             this.id = id;
         }
 
+        public NodeGene replicate() {
+            return new NodeGene(type, id);
+        }
+
         public override string ToString() {
             string s = "{";
             if (type == NodeType.INPUT_NODE)

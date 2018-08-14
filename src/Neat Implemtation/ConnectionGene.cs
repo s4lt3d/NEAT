@@ -31,5 +31,9 @@ namespace Neat_Implemtation {
         public override string ToString() {
             return "{" + inNode + ", " + outNode + ", " + weight + ", " + expressed + ", " + innovation + "}";
         }
+
+        public ConnectionGene replicate() {
+            return new ConnectionGene(inNode, outNode, weight, expressed, innovation);
+        }
     }
 }

@@ -9,7 +9,17 @@ namespace Neat_Implemtation
         List<NodeGene> nodes = new List<NodeGene>();
         int globalInnovationNumber = 0;
 
+        public List<ConnectionGene> Connections { get => connections; }
+        public List<NodeGene> Nodes { get => nodes; }
+
         public Genome() {
+            
+        }
+
+        /// <summary>
+        /// The minimal structure a genome can have. For brand new genomes, not for crossover
+        /// </summary>
+        public void initGenome() {
             NodeGene bias = new NodeGene(NodeGene.NodeType.BIAS_NODE, globalInnovationNumber++);
             NodeGene n2 = new NodeGene(NodeGene.NodeType.OUTPUT_NODE, globalInnovationNumber++);
             NodeGene n3 = new NodeGene(NodeGene.NodeType.INPUT_NODE, globalInnovationNumber++);
@@ -130,6 +140,27 @@ namespace Neat_Implemtation
 
             connections.Add(c1);
             connections.Add(c2);
+        }
+
+
+        public void AddNodeGene(NodeGene gene) {
+            nodes.Add(gene);
+        }
+
+
+        /// <summary>
+        /// Breeding! When crossing over, the  genes in both genomes with the same innovation numbers are lined up.
+        /// These genes are called matching genes.Genes that do not match are either disjoint or excess, depending
+        /// on whether they occur within or outside the range of the other parent’s innovation
+        /// numbers.They represent structure that is not present in the other genome.
+        /// </summary>
+        /// <param name="parent1">Should be the most fit</param>
+        /// <param name="parent2">Should be the least fit</param>
+        /// <returns></returns>
+        public Genome crossover(Genome parent1, Genome parent2) {
+            Genome child = new Genome();
+
+           
         }
     }
 }
