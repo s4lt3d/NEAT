@@ -199,7 +199,8 @@ namespace Neat_Implemtation
         /// <param name="parent1">Should be the most fit</param>
         /// <param name="parent2">Should be the least fit</param>
         /// <returns></returns>
-        public Genome crossover(Genome parent1, Genome parent2) {
+        public Genome crossover(Genome parent1) {
+            Genome parent2 = this; // we are the female? 
             Genome offspring = new Genome(Math.Max(parent1.globalInnovationNumber, parent2.globalInnovationNumber)); // continue innovataion number
 
             foreach (NodeGene node in parent1.Nodes) {

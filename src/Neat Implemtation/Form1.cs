@@ -18,7 +18,7 @@ namespace Neat_Implemtation
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            Genome parent1 = new Genome();
+            Genome parent1 = new Genome(8);
             parent1.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE,  1));
             parent1.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE,  2));
             parent1.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE,  3));
@@ -33,8 +33,30 @@ namespace Neat_Implemtation
 
             textBox1.Text =  parent1.ToString();
 
-            Genome parent2 = new Genome();
+            Genome parent2 = new Genome(10);
 
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE, 1));
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE, 2));
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.INPUT_NODE, 3));
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.OUTPUT_NODE, 4));
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.HIDDEN_NODE, 5));
+            parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.HIDDEN_NODE, 6));
+
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 4, 2, true, 1));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(2, 4, 2, false, 2));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(3, 4, 2, true, 3));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(2, 5, 2, true, 4));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(5, 4, 2, false, 5));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(5, 6, 2, true, 6));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(6, 4, 2, true, 7));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(3, 5, 2, true, 9));
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 6, 2, true, 10));
+
+            textBox2.Text = parent2.ToString();
+
+            Genome offspring = parent2.crossover(parent1);
+
+            textBox3.Text = offspring.ToString();
         }
     }
 }
