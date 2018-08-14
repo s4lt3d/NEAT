@@ -14,12 +14,25 @@ namespace Neat_Implemtation
 
         Random r = new Random();
 
-        public Genome(int seed) {
+        public Genome(int innovationNumber, int seed) {
             r = new Random(seed);
+            this.globalInnovationNumber = innovationNumber;
         }
 
-        public Genome() {
-
+        public Genome(int innovationNumber) {
+            this.globalInnovationNumber = innovationNumber;
+        }
+        
+        public override string ToString() {
+            string s = "------\r\n";
+            foreach (ConnectionGene connection in Connections) {
+                s += connection.Innovation + "\r\n";
+                s += connection.InNode + "->" + connection.OutNode + "\r\n";
+                if (connection.Expressed == false)
+                    s += "DISAB\r\n";
+                s += "------\r\n";
+            }
+            return s;
         }
 
         /// <summary>
@@ -187,7 +200,7 @@ namespace Neat_Implemtation
         /// <param name="parent2">Should be the least fit</param>
         /// <returns></returns>
         public Genome crossover(Genome parent1, Genome parent2) {
-            Genome offspring = new Genome();
+            Genome offspring = new Genome(Math.Max(parent1.globalInnovationNumber, parent2.globalInnovationNumber)); // continue innovataion number
 
             foreach (NodeGene node in parent1.Nodes) {
                 offspring.BuildNodeGenesFromCrossover(node);
