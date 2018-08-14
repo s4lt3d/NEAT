@@ -21,8 +21,7 @@ namespace Neat_Implemtation
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            genome.addConnectionMutation(r);
-            genome.addNode(r);
+
         }
     }
 }

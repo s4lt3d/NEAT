@@ -5,15 +5,21 @@ namespace Neat_Implemtation
 {
     class Genome
     {
-        List<ConnectionGene> connections = new List<ConnectionGene>();
-        List<NodeGene> nodes = new List<NodeGene>();
-        int globalInnovationNumber = 0;
-
+        private List<ConnectionGene> connections = new List<ConnectionGene>();
+        private List<NodeGene> nodes = new List<NodeGene>();
+        private int globalInnovationNumber = 0;
+        public double fitness = 0;
         public List<ConnectionGene> Connections { get => connections; }
         public List<NodeGene> Nodes { get => nodes; }
 
+        Random r = new Random();
+
+        public Genome(int seed) {
+            r = new Random(seed);
+        }
+
         public Genome() {
-            
+
         }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace Neat_Implemtation
         /// Connection weights mutate as in any NE system, with each connection either perturbed or not at each generation.
         /// </summary>
         /// <param name="r"></param>
-        public void mutateConnectionWeights(Random r) {
+        public void mutateConnectionWeights() {
             for (int i = 0; i < connections.Count; i++) {
                 connections[i].mutateWeight(r);
             }
@@ -56,16 +62,25 @@ namespace Neat_Implemtation
         /// <param name="node1"></param>
         /// <param name="node2"></param>
         /// <returns></returns>
-        public bool containsConnection(int node1, int node2) {
+        public ConnectionGene containsConnection(int node1, int node2) {
             foreach (ConnectionGene c in connections) {
                 // else may be trimmed, but leaving for debugging issues
                 if (c.InNode == node1 && c.OutNode == node2)
-                    return true;
+                    return c;
                 else if (c.OutNode == node1 && c.InNode == node2)
-                    return true;
+                    return c;
             }
 
-            return false;
+            return null;
+        }
+
+        /// <summary>
+        /// Does the connection list contain a link between two nodes?
+        /// </summary>
+        /// <param name="gene"></param>
+        /// <returns></returns>
+        public ConnectionGene containsConnection(ConnectionGene gene) {
+            return containsConnection(gene.InNode, gene.OutNode);
         }
 
         /// <summary>
@@ -73,13 +88,13 @@ namespace Neat_Implemtation
         /// random weight is added connecting two previously unconnected nodes.
         /// </summary>
         /// <param name="r"></param>
-        public void addConnectionMutation(Random r) {
+        public void addConnectionMutation() {
             int n1 = r.Next(0, nodes.Count); // (from 0 and count -1)
             int n2 = r.Next(0, nodes.Count);
 
             // no self connections
             int k = 0; // prevents runaway
-            while (n1 == n2 && k++ < 10 && containsConnection(n1, n2) == true) { 
+            while (n1 == n2 && k++ < 10 && containsConnection(n1, n2) != null) { 
                 n2 = r.Next(0, nodes.Count);
             }
 
@@ -102,7 +117,7 @@ namespace Neat_Implemtation
             // cases which are not allowed.  
             if (n1 == n2)
                 return;
-            if (containsConnection(n1, n2))
+            if (containsConnection(n1, n2) != null)
                 return;
             else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.INPUT_NODE)
                 return;
@@ -127,7 +142,7 @@ namespace Neat_Implemtation
         ///  receives the same weight as the old connection.
         /// </summary>
         /// <param name="r"></param>
-        public void addNode(Random r) {
+        public void addNode() {
             int c = r.Next(0, connections.Count); // (from 0 and count -1)
             NodeGene newNode = new NodeGene(NodeGene.NodeType.HIDDEN_NODE, globalInnovationNumber++);
             int newNodeNumber = nodes.Count;
@@ -142,9 +157,23 @@ namespace Neat_Implemtation
             connections.Add(c2);
         }
 
+        
 
-        public void AddNodeGene(NodeGene gene) {
+        public void BuildNodeGenesFromCrossover(NodeGene gene) {
+            foreach (NodeGene node in nodes)
+                if (node.Id == gene.Id)
+                    return;
+            // otherwise add the gene
             nodes.Add(gene);
+        }
+
+        public void BuildConnectionGenesFromCrossover(ConnectionGene gene) {
+            foreach (ConnectionGene connection in connections) {
+                if (connection.Innovation == gene.Innovation)
+                    return;
+            }
+            // otherwise add the gene
+            connections.Add(gene);
         }
 
 
@@ -158,9 +187,46 @@ namespace Neat_Implemtation
         /// <param name="parent2">Should be the least fit</param>
         /// <returns></returns>
         public Genome crossover(Genome parent1, Genome parent2) {
-            Genome child = new Genome();
+            Genome offspring = new Genome();
 
-           
+            foreach (NodeGene node in parent1.Nodes) {
+                offspring.BuildNodeGenesFromCrossover(node);
+            }
+            foreach (NodeGene node in parent2.Nodes) {
+                offspring.BuildNodeGenesFromCrossover(node);
+            }
+
+            foreach (ConnectionGene cp1 in parent1.Connections) {
+                ConnectionGene cp2 = parent2.containsConnection(cp1);
+                if (cp2 != null) {
+                    if (r.NextDouble() > 0.5) {
+                        offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
+                    }
+                    else {
+                        offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
+                    }
+                }
+                else {
+                    offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
+                }
+            }
+
+            foreach (ConnectionGene cp2 in parent2.Connections) {
+                ConnectionGene cp1 = parent1.containsConnection(cp2);
+                if (cp1 != null) {
+                    if (r.NextDouble() > 0.5) {
+                        offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
+                    }
+                    else {
+                        offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
+                    }
+                }
+                else {
+                    offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
+                }
+            }
+
+            return offspring;
         }
     }
 }
