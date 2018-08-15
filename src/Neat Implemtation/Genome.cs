@@ -174,7 +174,7 @@ namespace Neat_Implemtation
 
         public void BuildNodeGenesFromCrossover(NodeGene gene) {
             foreach (NodeGene node in nodes)
-                if (node.Id == gene.Id)
+                if (node.Innovation == gene.Innovation)
                     return;
             // otherwise add the gene
             nodes.Add(gene);
@@ -191,27 +191,60 @@ namespace Neat_Implemtation
 
 
         /// <summary>
+        /// A comparison of compatibiltiy before mating
+        /// </summary>
+        /// <param name="mate">The other genome to mate with</param>
+        /// <returns></returns>
+        public double Compatibility(Genome mate) {
+            int disjoint = 0;
+            double weightDifference = 0;
+            double weightDifferenceAvg = 0;
+            int matches = 0;
+
+            int disjointGenes = 0;
+            foreach (ConnectionGene gene in connections) {
+                bool found = false;
+                foreach (ConnectionGene other in mate.Connections) {
+                    if (other.Innovation == gene.Innovation) {
+                        found = true;
+                        matches++;
+                        weightDifference += Math.Abs(other.Weight - gene.Weight);
+                        break;
+                    }
+                }
+                if (found == false) {
+                    disjointGenes++;
+                }
+            }
+
+            weightDifferenceAvg = weightDifference / matches;
+
+            double delta = (double)disjoint / Math.Max(mate.Connections.Count, connections.Count) + weightDifferenceAvg;
+
+            return delta;
+        }
+        
+        /// <summary>
         /// Breeding! When crossing over, the  genes in both genomes with the same innovation numbers are lined up.
         /// These genes are called matching genes.Genes that do not match are either disjoint or excess, depending
         /// on whether they occur within or outside the range of the other parent’s innovation
         /// numbers.They represent structure that is not present in the other genome.
         /// </summary>
-        /// <param name="parent1">Should be the most fit</param>
-        /// <param name="parent2">Should be the least fit</param>
+        /// <param name="mate">Should be the most fit</param>
         /// <returns></returns>
-        public Genome crossover(Genome parent1) {
-            Genome parent2 = this; // we are the female? 
-            Genome offspring = new Genome(Math.Max(parent1.globalInnovationNumber, parent2.globalInnovationNumber)); // continue innovataion number
+        public Genome crossover(Genome mate) {
+            Genome self = this; // we are the female? 
+            Genome offspring = new Genome(Math.Max(mate.globalInnovationNumber, self.globalInnovationNumber)); // continue innovataion number
 
-            foreach (NodeGene node in parent1.Nodes) {
+            foreach (NodeGene node in mate.Nodes) {
                 offspring.BuildNodeGenesFromCrossover(node);
             }
-            foreach (NodeGene node in parent2.Nodes) {
+            foreach (NodeGene node in self.Nodes) {
                 offspring.BuildNodeGenesFromCrossover(node);
             }
 
-            foreach (ConnectionGene cp1 in parent1.Connections) {
-                ConnectionGene cp2 = parent2.containsConnection(cp1);
+            foreach (ConnectionGene cp1 in mate.Connections) {
+                ConnectionGene cp2 = self.containsConnection(cp1);
                 if (cp2 != null) {
                     if (r.NextDouble() > 0.5) {
                         offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
@@ -225,7 +258,7 @@ namespace Neat_Implemtation
                 }
             }
 
-            foreach (ConnectionGene cp2 in parent2.Connections) {
+            foreach (ConnectionGene cp2 in self.Connections) {
                 offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
             }
 

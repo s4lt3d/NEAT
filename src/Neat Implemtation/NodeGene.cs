@@ -12,7 +12,7 @@
         int id;
 
         public NodeType Type { get => type;  }
-        public int Id { get => id; }
+        public int Innovation { get => id; }
 
         public NodeGene(NodeType type, int id) {
             this.type = type;
