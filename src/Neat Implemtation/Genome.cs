@@ -134,8 +134,6 @@ namespace Neat_Implemtation
             // self connections are fine
             if (containsConnection(n1, n2) != null)
                 return;
-            else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.INPUT_NODE)
-                return;
             else if (nodes[n2].Type == NodeGene.NodeType.BIAS_NODE)
                 return;
             
