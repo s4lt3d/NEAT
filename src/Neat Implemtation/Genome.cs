@@ -127,18 +127,16 @@ namespace Neat_Implemtation
                 n2 = swap;
             }
             
-            // cases which are not allowed.  
-            if (n1 == n2)
-                return;
+            // cases which are not allowed.
+            // can't have two connections
+            // can't change bias
+            // can't change other inputs directly
+            // self connections are fine
             if (containsConnection(n1, n2) != null)
                 return;
             else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.INPUT_NODE)
                 return;
-            else if (nodes[n1].Type == NodeGene.NodeType.OUTPUT_NODE && nodes[n2].Type == NodeGene.NodeType.OUTPUT_NODE)
-                return;
-            else if (nodes[n1].Type == NodeGene.NodeType.BIAS_NODE && nodes[n2].Type == NodeGene.NodeType.INPUT_NODE)
-                return;
-            else if (nodes[n1].Type == NodeGene.NodeType.INPUT_NODE && nodes[n2].Type == NodeGene.NodeType.BIAS_NODE)
+            else if (nodes[n2].Type == NodeGene.NodeType.BIAS_NODE)
                 return;
             
             float w = (float)(r.NextDouble() * 2 - 1);
