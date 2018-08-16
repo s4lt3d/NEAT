@@ -7,20 +7,18 @@ namespace Neat_Implemtation
     {
         private List<ConnectionGene> connections = new List<ConnectionGene>();
         private List<NodeGene> nodes = new List<NodeGene>();
-        private int globalInnovationNumber = 0;
         public double fitness = 0;
         public List<ConnectionGene> Connections { get => connections; }
         public List<NodeGene> Nodes { get => nodes; }
 
         Random r = new Random();
 
-        public Genome(int innovationNumber, int seed) {
+        public Genome(int seed) {
             r = new Random(seed);
-            this.globalInnovationNumber = innovationNumber;
         }
 
-        public Genome(int innovationNumber) {
-            this.globalInnovationNumber = innovationNumber;
+        public Genome() {
+
         }
         
         public override string ToString() {
@@ -39,19 +37,19 @@ namespace Neat_Implemtation
         /// The minimal structure a genome can have. For brand new genomes, not for crossover
         /// </summary>
         public void initGenome() {
-            NodeGene bias = new NodeGene(NodeGene.NodeType.BIAS_NODE, globalInnovationNumber++);
-            NodeGene n2 = new NodeGene(NodeGene.NodeType.OUTPUT_NODE, globalInnovationNumber++);
-            NodeGene n3 = new NodeGene(NodeGene.NodeType.INPUT_NODE, globalInnovationNumber++);
-            NodeGene n4 = new NodeGene(NodeGene.NodeType.INPUT_NODE, globalInnovationNumber++);
+            NodeGene bias = new NodeGene(NodeGene.NodeType.BIAS_NODE, GlobalInnovation.Next);
+            NodeGene n2 = new NodeGene(NodeGene.NodeType.OUTPUT_NODE, GlobalInnovation.Next);
+            NodeGene n3 = new NodeGene(NodeGene.NodeType.INPUT_NODE, GlobalInnovation.Next);
+            NodeGene n4 = new NodeGene(NodeGene.NodeType.INPUT_NODE, GlobalInnovation.Next);
 
             nodes.Add(bias);
             nodes.Add(n2);
             nodes.Add(n3);
             nodes.Add(n4);
 
-            ConnectionGene c1 = new ConnectionGene(0, 1, -1, true, globalInnovationNumber++);
-            ConnectionGene c2 = new ConnectionGene(2, 1, 2, true, globalInnovationNumber++);
-            ConnectionGene c3 = new ConnectionGene(3, 1, 3, true, globalInnovationNumber++);
+            ConnectionGene c1 = new ConnectionGene(0, 1, -1, true, GlobalInnovation.Next);
+            ConnectionGene c2 = new ConnectionGene(2, 1, 2, true, GlobalInnovation.Next);
+            ConnectionGene c3 = new ConnectionGene(3, 1, 3, true, GlobalInnovation.Next);
 
             connections.Add(c1);
             connections.Add(c2);
@@ -153,7 +151,7 @@ namespace Neat_Implemtation
         /// <param name="r"></param>
         public void addNode() {
             int c = r.Next(0, connections.Count); // (from 0 and count -1)
-            NodeGene newNode = new NodeGene(NodeGene.NodeType.HIDDEN_NODE, globalInnovationNumber++);
+            NodeGene newNode = new NodeGene(NodeGene.NodeType.HIDDEN_NODE, GlobalInnovation.Next);
             int newNodeNumber = nodes.Count;
             nodes.Add(newNode);
 
@@ -230,7 +228,7 @@ namespace Neat_Implemtation
         /// <returns></returns>
         public Genome crossover(Genome mate) {
             Genome self = this; // we are the female? 
-            Genome offspring = new Genome(Math.Max(mate.globalInnovationNumber, self.globalInnovationNumber)); // continue innovataion number
+            Genome offspring = new Genome(); 
 
             foreach (NodeGene node in mate.Nodes) {
                 offspring.BuildNodeGenesFromCrossover(node);
