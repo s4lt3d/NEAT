@@ -1,4 +1,6 @@
-﻿namespace Neat_Implemtation {
+﻿using System;
+
+namespace Neat_Implemtation {
     public class NodeGene
     {
         public enum NodeType {
@@ -21,6 +23,11 @@
 
         public NodeGene replicate() {
             return new NodeGene(type, id);
+        }
+
+        public double sigmoid(double x)
+        {
+            return 2.0 / (1.0 + Math.Exp(-4.9 * x)) - 1;
         }
 
         public override string ToString() {
