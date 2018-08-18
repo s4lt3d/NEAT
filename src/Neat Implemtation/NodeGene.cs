@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Neat_Implemtation : IEquatable<ConnectionGene>, IComparable<ConnectionGene> {
-    public class NodeGene
-    {
+namespace Neat_Implemtation  {
+    public class NodeGene : IEquatable<NodeGene>, IComparable<NodeGene> {
         public enum NodeType {
             INPUT_NODE, 
             OUTPUT_NODE,
