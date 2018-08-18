@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Neat_Implemtation
 {
-    class Genome
+    class Genome : ICloneable
     {
         private List<ConnectionGene> connections = new List<ConnectionGene>();
         private List<NodeGene> nodes = new List<NodeGene>();
@@ -257,6 +257,19 @@ namespace Neat_Implemtation
             }
 
             return offspring;
+        }
+
+        public object Clone() {
+            Genome g = new Genome();
+            foreach (NodeGene node in Nodes)
+                g.BuildNodeGenesFromCrossover((NodeGene)node.Clone());
+
+            foreach (ConnectionGene connection in Connections)
+                g.BuildConnectionGenesFromCrossover((ConnectionGene)connection.Clone());
+
+            g.fitness = fitness;
+
+            return g;
         }
     }
 }
