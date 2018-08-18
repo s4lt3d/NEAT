@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Neat_Implemtation {
+namespace Neat_Implemtation : IEquatable<ConnectionGene>, IComparable<ConnectionGene> {
     public class NodeGene
     {
         public enum NodeType {
@@ -11,18 +11,18 @@ namespace Neat_Implemtation {
         }
 
         NodeType type;
-        int id;
+        int innovation;
 
         public NodeType Type { get => type;  }
-        public int Innovation { get => id; }
+        public int Innovation { get => innovation; }
 
         public NodeGene(NodeType type, int id) {
             this.type = type;
-            this.id = id;
+            this.innovation = id;
         }
 
         public NodeGene replicate() {
-            return new NodeGene(type, id);
+            return new NodeGene(type, innovation);
         }
 
         public double sigmoid(double x)
@@ -41,8 +41,30 @@ namespace Neat_Implemtation {
             else if (type == NodeType.BIAS_NODE)
                 s += "BIAS,   ";
 
-            s += id + "}";
+            s += innovation + "}";
             return s;
+        }
+
+        // Functions for generic list sorting and comparing
+        public int CompareTo(NodeGene other) {
+            if (other == null) // sort nulls to end
+                return -1;
+
+            if (other.Innovation > innovation) {
+                return 1;
+            }
+            else if (other.Innovation == innovation)
+                return 0;
+
+            return -1;
+        }
+
+        public bool Equals(NodeGene other) {
+            return other.Innovation == innovation;
+        }
+
+        public override int GetHashCode() {
+            return innovation; // this is a global id
         }
     }
 }

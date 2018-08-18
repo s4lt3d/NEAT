@@ -1,8 +1,7 @@
 ﻿using System;
 
 namespace Neat_Implemtation {
-    class ConnectionGene
-    {
+    class ConnectionGene : IEquatable<ConnectionGene>, IComparable<ConnectionGene> {
         int inNode;
         int outNode;
         float weight;
@@ -34,6 +33,27 @@ namespace Neat_Implemtation {
 
         public ConnectionGene replicate() {
             return new ConnectionGene(inNode, outNode, weight, expressed, innovation);
+        }
+
+        // Functions for generic list sorting and comparing
+        public int CompareTo(ConnectionGene other) {
+            if (other == null) // sort nulls to end
+                return -1;
+
+            if (other.Innovation > innovation) {
+                return 1;
+            } else if(other.Innovation == innovation)
+                return 0;
+
+            return -1;
+        }
+
+        public bool Equals(ConnectionGene other) {
+            return other.Innovation == innovation;
+        }
+
+        public override int GetHashCode() {
+            return innovation; // this is a global id
         }
     }
 }
