@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Neat_Implemtation  {
-    public class NodeGene : IEquatable<NodeGene>, IComparable<NodeGene> {
+    public class NodeGene : IEquatable<NodeGene>, IComparable<NodeGene>, ICloneable {
         public enum NodeType {
             INPUT_NODE, 
             OUTPUT_NODE,
@@ -20,7 +20,7 @@ namespace Neat_Implemtation  {
             this.innovation = id;
         }
 
-        public NodeGene replicate() {
+        public object Clone() {
             return new NodeGene(type, innovation);
         }
 
@@ -65,5 +65,7 @@ namespace Neat_Implemtation  {
         public override int GetHashCode() {
             return innovation; // this is a global id
         }
+
+       
     }
 }

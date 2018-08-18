@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Neat_Implemtation {
-    class ConnectionGene : IEquatable<ConnectionGene>, IComparable<ConnectionGene> {
+    class ConnectionGene : IEquatable<ConnectionGene>, IComparable<ConnectionGene>, ICloneable {
         int inNode;
         int outNode;
         float weight;
@@ -31,7 +31,7 @@ namespace Neat_Implemtation {
             return "{" + inNode + ", " + outNode + ", " + weight + ", " + expressed + ", " + innovation + "}";
         }
 
-        public ConnectionGene replicate() {
+        public object Clone() {
             return new ConnectionGene(inNode, outNode, weight, expressed, innovation);
         }
 
@@ -55,5 +55,7 @@ namespace Neat_Implemtation {
         public override int GetHashCode() {
             return innovation; // this is a global id
         }
+
+
     }
 }

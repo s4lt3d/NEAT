@@ -241,19 +241,19 @@ namespace Neat_Implemtation
                 ConnectionGene cp2 = self.containsConnection(cp1);
                 if (cp2 != null) {
                     if (r.NextDouble() > 0.5) {
-                        offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
+                        offspring.BuildConnectionGenesFromCrossover((ConnectionGene)cp1.Clone());
                     }
                     else {
-                        offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
+                        offspring.BuildConnectionGenesFromCrossover((ConnectionGene)cp2.Clone());
                     }
                 }
                 else {
-                    offspring.BuildConnectionGenesFromCrossover(cp1.replicate());
+                    offspring.BuildConnectionGenesFromCrossover((ConnectionGene)cp1.Clone());
                 }
             }
 
             foreach (ConnectionGene cp2 in self.Connections) {
-                offspring.BuildConnectionGenesFromCrossover(cp2.replicate());
+                offspring.BuildConnectionGenesFromCrossover((ConnectionGene)cp2.Clone());
             }
 
             return offspring;
