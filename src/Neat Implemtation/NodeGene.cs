@@ -11,6 +11,7 @@ namespace Neat_Implemtation  {
 
         NodeType type;
         int innovation;
+        public int SortingID = -1;
 
         public NodeType Type { get => type;  }
         public int Innovation { get => innovation; }
@@ -49,10 +50,10 @@ namespace Neat_Implemtation  {
             if (other == null) // sort nulls to end
                 return -1;
 
-            if (other.Innovation > innovation) {
+            if (other.SortingID > SortingID) {
                 return 1;
             }
-            else if (other.Innovation == innovation)
+            else if (other.SortingID == SortingID)
                 return 0;
 
             return -1;

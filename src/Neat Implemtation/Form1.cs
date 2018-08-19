@@ -30,7 +30,7 @@ namespace Neat_Implemtation
             parent1.BuildConnectionGenesFromCrossover(new ConnectionGene(2, 5, 1, true,  4));
             parent1.BuildConnectionGenesFromCrossover(new ConnectionGene(5, 4, 1, true,  5));
             parent1.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 5, 1, true,  8));
-
+            parent1.Sort();
             textBox1.Text =  parent1.ToString();
 
             Genome parent2 = new Genome(10);
@@ -51,10 +51,15 @@ namespace Neat_Implemtation
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(6, 4, 2, true, 7));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(3, 5, 2, true, 9));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 6, 2, true, 10));
+            
 
             textBox2.Text = parent2.ToString();
-
+            parent2.Sort();
             Genome offspring = parent2.crossover(parent1);
+
+
+          
+            
 
             textBox3.Text = offspring.ToString();
         }

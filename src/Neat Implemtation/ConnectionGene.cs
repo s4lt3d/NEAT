@@ -7,8 +7,7 @@ namespace Neat_Implemtation {
         float weight;
         bool expressed;
         int innovation;
-
-        public int SortingID = 0;
+        public int SortingID = -1;
 
         public ConnectionGene(int inNode, int outNode, float weight, bool expressed, int innovation) {
             this.inNode = inNode;
@@ -42,7 +41,7 @@ namespace Neat_Implemtation {
             if (other == null) // sort nulls to end
                 return -1;
 
-            if (other.SortingID > SortingID) {
+            if (other.SortingID < SortingID) {
                 return 1;
             } else if(other.SortingID == SortingID)
                 return 0;

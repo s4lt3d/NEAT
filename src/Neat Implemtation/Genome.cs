@@ -32,20 +32,60 @@ namespace Neat_Implemtation
             return s;
         }
 
-        List<int> visited; // used in TopologicalSort functions
-        List<int> sorted;  // 
+        List<NodeGene> visited; // used in TopologicalSort functions
+        List<NodeGene> sorted;  // 
 
-        public void TopologicalSortConnections() {
-            visited = new List<int>(connections.Count);
-            sorted = new List<int>(connections.Count);
+        List<ConnectionGene> GetConnectionByInNode(int id) {
+            List<ConnectionGene> connections = new List<ConnectionGene>();
+            foreach (ConnectionGene g in Connections) {
+                if (g.InNode == id)
+                    connections.Add(g);
+            }
+            return connections;
+        }
 
-            foreach (ConnectionGene g in connections) {
-                if (visited.Contains(g.Innovation) == false)
-                    TopologicalSort(g);
+        List<ConnectionGene> GetConnectionByOutNode(int id) {
+            List<ConnectionGene> connections = new List<ConnectionGene>();
+            foreach (ConnectionGene g in Connections) {
+                if (g.OutNode == id)
+                    connections.Add(g);
+            }
+            return connections;
+        }
+
+        List<NodeGene> GetChildNodes(int id) {
+            List<NodeGene> children = new List<NodeGene>();
+            foreach (ConnectionGene g in GetConnectionByInNode(id)) {
+                children.Add(GetNodeByID(g.OutNode));
             }
 
-            for (int i = 0; i < sorted.Count; i++) {
-                GetConnectionByID(sorted[i]).SortingID = i;
+            return children;
+        }
+
+        /// <summary>
+        /// Depth-first search
+        /// </summary>
+        public void Sort() {
+            sorted = new List<NodeGene>(Connections.Count);
+            visited = new List<NodeGene>(Connections.Count);
+
+            foreach (NodeGene g in Nodes)
+                g.SortingID = -1;
+
+            foreach (NodeGene g in Nodes) {
+                Visit(g);
+            }
+
+            for(int i = 0; i < sorted.Count; i++) {
+                sorted[i].SortingID = i;
+            }
+
+            nodes.Sort();
+            int k = 0;
+            foreach (NodeGene n in Nodes) {
+                foreach (ConnectionGene g in GetConnectionByInNode(n.Innovation)) {
+                    g.SortingID = k++;
+                }
             }
 
             connections.Sort();
@@ -54,35 +94,34 @@ namespace Neat_Implemtation
             sorted.Clear();
         }
 
-        public void TopologicalSort(ConnectionGene g) {
-            if (visited.Contains(g.Innovation))
+        void Visit(NodeGene g) {
+            if (visited.Contains(g))
                 return;
-
-            visited.Add(g.Innovation);
-            ConnectionGene child = GetConnectionByInNode(g.OutNode);
-
-            if (child == null)
-                sorted.Add(g.Innovation);
-            else {
-                TopologicalSort(child);
-                sorted.Add(g.Innovation);
+            visited.Add(g);
+            foreach (NodeGene c in GetChildNodes(g.Innovation)) {
+                Visit(c);
             }
+            sorted.Add(g);
         }
 
-        public ConnectionGene GetConnectionByID(int id) {
+        public List<ConnectionGene> GetInputConnections() {
+            List<ConnectionGene> inputs = new List<ConnectionGene>();
             foreach (ConnectionGene g in Connections) {
-                if (g.Innovation == id)
-                    return g;
+                NodeGene n = GetNodeByID(g.InNode);
+                if (n == null)
+                    continue;
+                if (n.Type == NodeGene.NodeType.INPUT_NODE) {
+                    inputs.Add(g);
+                }
             }
-            return null;
+
+            return inputs;
         }
 
-        public ConnectionGene GetConnectionByInNode(int id) {
-            foreach (ConnectionGene g in Connections) {
-                if (visited.Contains(id))
-                    return null;
-                if (g.InNode == id)
-                    return g;
+        public NodeGene GetNodeByID(int id) {
+            foreach (NodeGene n in Nodes) {
+                if (n.Innovation == id)
+                    return n;
             }
             return null;
         }
