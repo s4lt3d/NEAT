@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace Neat_Implemtation
 {
-    class Genome : ICloneable
-    {
+    class Genome : IEquatable<Genome>, IComparable<Genome>, ICloneable {
         private List<ConnectionGene> connections = new List<ConnectionGene>();
         private List<NodeGene> nodes = new List<NodeGene>();
         public double fitness = 0;
@@ -270,6 +269,32 @@ namespace Neat_Implemtation
             g.fitness = fitness;
 
             return g;
+        }
+
+        public bool Equals(Genome other) {
+            if(Math.Abs(fitness - other.fitness) < 0.001)
+                return true;
+
+            return false;
+        }
+
+        public int CompareTo(Genome other) {
+            if (other == null) // sort nulls to end
+                return -1;
+
+            if (other.fitness > fitness) {
+                return 1;
+            }
+            else if (other.fitness == fitness) {
+                if (other.Nodes.Count > Nodes.Count)
+                    return 1;
+                else if (other.Nodes.Count == Nodes.Count)
+                    return 0;
+
+                return -1;
+            }
+
+            return -1;
         }
     }
 }
