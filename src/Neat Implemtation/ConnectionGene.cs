@@ -8,6 +8,8 @@ namespace Neat_Implemtation {
         bool expressed;
         int innovation;
 
+        public int SortingID = 0;
+
         public ConnectionGene(int inNode, int outNode, float weight, bool expressed, int innovation) {
             this.inNode = inNode;
             this.outNode = outNode;
@@ -35,14 +37,14 @@ namespace Neat_Implemtation {
             return new ConnectionGene(inNode, outNode, weight, expressed, innovation);
         }
 
-        // Functions for generic list sorting and comparing
+        // Functions for generic list sorting and comparing. Used for topological sorting implemented in Genome class
         public int CompareTo(ConnectionGene other) {
             if (other == null) // sort nulls to end
                 return -1;
 
-            if (other.Innovation > innovation) {
+            if (other.SortingID > SortingID) {
                 return 1;
-            } else if(other.Innovation == innovation)
+            } else if(other.SortingID == SortingID)
                 return 0;
 
             return -1;

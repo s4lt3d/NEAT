@@ -32,6 +32,61 @@ namespace Neat_Implemtation
             return s;
         }
 
+        List<int> visited; // used in TopologicalSort functions
+        List<int> sorted;  // 
+
+        public void TopologicalSortConnections() {
+            visited = new List<int>(connections.Count);
+            sorted = new List<int>(connections.Count);
+
+            foreach (ConnectionGene g in connections) {
+                if (visited.Contains(g.Innovation) == false)
+                    TopologicalSort(g);
+            }
+
+            for (int i = 0; i < sorted.Count; i++) {
+                GetConnectionByID(sorted[i]).SortingID = i;
+            }
+
+            connections.Sort();
+
+            visited.Clear();
+            sorted.Clear();
+        }
+
+        public void TopologicalSort(ConnectionGene g) {
+            if (visited.Contains(g.Innovation))
+                return;
+
+            visited.Add(g.Innovation);
+            ConnectionGene child = GetConnectionByInNode(g.OutNode);
+
+            if (child == null)
+                sorted.Add(g.Innovation);
+            else {
+                TopologicalSort(child);
+                sorted.Add(g.Innovation);
+            }
+        }
+
+        public ConnectionGene GetConnectionByID(int id) {
+            foreach (ConnectionGene g in Connections) {
+                if (g.Innovation == id)
+                    return g;
+            }
+            return null;
+        }
+
+        public ConnectionGene GetConnectionByInNode(int id) {
+            foreach (ConnectionGene g in Connections) {
+                if (visited.Contains(id))
+                    return null;
+                if (g.InNode == id)
+                    return g;
+            }
+            return null;
+        }
+
         /// <summary>
         /// The minimal structure a genome can have. For brand new genomes, not for crossover
         /// </summary>
@@ -53,6 +108,7 @@ namespace Neat_Implemtation
             connections.Add(c1);
             connections.Add(c2);
             connections.Add(c3);
+            connections.Sort();
         }
         
         /// <summary>
@@ -257,6 +313,15 @@ namespace Neat_Implemtation
 
             return offspring;
         }
+
+        public bool EvaluationNetwork(List<float> inputs) {
+
+
+            return true;
+        }
+
+
+        // interface functions ////////////////
 
         public object Clone() {
             Genome g = new Genome();
