@@ -391,7 +391,7 @@ namespace Neat_Implemtation
         }
 
         public bool Equals(Genome other) {
-            if(Math.Abs(fitness - other.fitness) < 0.001)
+            if(Compatibility(other) < Species.CompatibilityDistance)
                 return true;
 
             return false;

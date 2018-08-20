@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace Neat_Implemtation {
     class Species {
-        Genome ApexGenome;
+        Genome Representative;
         List<Genome> population = new List<Genome>();
+        public static double CompatibilityDistance = 1;
 
         public Species() { }
 
         public Species(Genome g) {
-            ApexGenome = g;
+            Representative = g;
             population.Add(g);
         }
-
-
     }
 }
