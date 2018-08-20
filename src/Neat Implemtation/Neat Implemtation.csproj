@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionGene.cs" />
+    <Compile Include="NEAT\ConnectionGene.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
