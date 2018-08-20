@@ -32,6 +32,39 @@ namespace Neat_Implemtation
             return s;
         }
 
+
+        /// <summary>
+        /// Evaluates the network given inputs and produces outputs
+        /// </summary>
+        /// <param name="inputs">List of inputs</param>
+        /// <returns>Array of outputs</returns>
+        double[] Evaluate(List<double> inputs) {
+            List<NodeGene> i = GetInputNodes();
+
+            i.Sort((x, y) => x.Innovation.CompareTo(y.Innovation));
+
+            for (int k = 0; k < i.Count; k++) {
+                i[k].evaluatedValue = inputs[k];
+            }
+
+            foreach (ConnectionGene g in Connections) {
+                NodeGene nodeIn = GetNodeByID(g.InNode);
+                NodeGene nodeOut = GetNodeByID(g.OutNode);
+                nodeOut.evaluatedValue += nodeIn.sigmoid(nodeIn.evaluatedValue) * g.Weight;
+            }
+
+            List<NodeGene> o = GetOutputNodes();
+            o.Sort((x, y) => x.Innovation.CompareTo(y.Innovation));
+
+            double[] outputs = new double[o.Count];
+
+            for (int k = 0; k < o.Count; k++) {
+                outputs[k] = o[k].evaluatedValue;
+            }
+
+            return outputs;
+        }
+
         private List<NodeGene> visited; // used in TopologicalSort functions
         private List<NodeGene> sorted;  // 
 
@@ -131,6 +164,17 @@ namespace Neat_Implemtation
             }
 
             return inputs;
+        }
+
+        public List<NodeGene> GetOutputNodes() {
+            List<NodeGene> outputs = new List<NodeGene>();
+            foreach (NodeGene n in Nodes) {
+                if (n.Type == NodeGene.NodeType.INPUT_NODE) {
+                    outputs.Add(n);
+                }
+            }
+
+            return outputs;
         }
 
         public NodeGene GetNodeByID(int id) {

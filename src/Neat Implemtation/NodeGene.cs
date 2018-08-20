@@ -15,6 +15,8 @@ namespace Neat_Implemtation  {
 
         public NodeType Type { get => type;  }
         public int Innovation { get => innovation; }
+        public double evaluatedValue;
+
 
         public NodeGene(NodeType type, int id) {
             this.type = type;
