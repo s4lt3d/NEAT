@@ -43,6 +43,7 @@ namespace Neat_Implemtation
             parent2.BuildNodeGenesFromCrossover(new NodeGene(NodeGene.NodeType.HIDDEN_NODE, 6));
 
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 4, 2, true, 1));
+            
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(2, 4, 2, false, 2));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(3, 4, 2, true, 3));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(2, 5, 2, true, 4));
@@ -51,7 +52,7 @@ namespace Neat_Implemtation
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(6, 4, 2, true, 7));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(3, 5, 2, true, 9));
             parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(1, 6, 2, true, 10));
-            
+            parent2.BuildConnectionGenesFromCrossover(new ConnectionGene(5, 5, 2, true, 11));
 
             textBox2.Text = parent2.ToString();
             parent2.Sort();

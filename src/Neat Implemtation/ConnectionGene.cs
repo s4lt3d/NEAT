@@ -7,7 +7,7 @@ namespace Neat_Implemtation {
         float weight;
         bool expressed;
         int innovation;
-        public int SortingID = -1;
+        private int sortingID = -1;
 
         public ConnectionGene(int inNode, int outNode, float weight, bool expressed, int innovation) {
             this.inNode = inNode;
@@ -22,6 +22,20 @@ namespace Neat_Implemtation {
         public float Weight { get => weight; }
         public bool Expressed { get => expressed; set => expressed = value; }
         public int Innovation { get => innovation; }
+        public int SortingID {
+            get => sortingID;
+
+            set  {
+                // If the connection is a self loop, we want to update very last as this should effect the next cycle as history. 
+                if (inNode == outNode) {
+                    sortingID = int.MaxValue - value;
+                }
+                else {
+                    sortingID = value;
+                }
+
+            }
+        }
 
         public void mutateWeight(Random r) {
             if(r.NextDouble() > 0.5)

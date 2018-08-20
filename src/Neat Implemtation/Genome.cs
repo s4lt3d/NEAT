@@ -32,8 +32,8 @@ namespace Neat_Implemtation
             return s;
         }
 
-        List<NodeGene> visited; // used in TopologicalSort functions
-        List<NodeGene> sorted;  // 
+        private List<NodeGene> visited; // used in TopologicalSort functions
+        private List<NodeGene> sorted;  // 
 
         List<ConnectionGene> GetConnectionByInNode(int id) {
             List<ConnectionGene> connections = new List<ConnectionGene>();
@@ -63,7 +63,7 @@ namespace Neat_Implemtation
         }
 
         /// <summary>
-        /// Depth-first search
+        /// Topological Depth-first search.
         /// </summary>
         public void Sort() {
             sorted = new List<NodeGene>(Connections.Count);
@@ -72,8 +72,8 @@ namespace Neat_Implemtation
             foreach (NodeGene g in Nodes)
                 g.SortingID = -1;
 
-            foreach (NodeGene g in Nodes) {
-                Visit(g);
+            foreach (NodeGene g in GetInputNodes()) {
+                SortNode(g);
             }
 
             for(int i = 0; i < sorted.Count; i++) {
@@ -94,12 +94,16 @@ namespace Neat_Implemtation
             sorted.Clear();
         }
 
-        void Visit(NodeGene g) {
+        /// <summary>
+        /// Recursive function to add nodes to sorted list
+        /// </summary>
+        /// <param name="g">Node to sort</param>
+        private void SortNode(NodeGene g) {
             if (visited.Contains(g))
                 return;
             visited.Add(g);
             foreach (NodeGene c in GetChildNodes(g.Innovation)) {
-                Visit(c);
+                SortNode(c);
             }
             sorted.Add(g);
         }
@@ -112,6 +116,17 @@ namespace Neat_Implemtation
                     continue;
                 if (n.Type == NodeGene.NodeType.INPUT_NODE) {
                     inputs.Add(g);
+                }
+            }
+
+            return inputs;
+        }
+
+        public List<NodeGene> GetInputNodes() {
+            List<NodeGene> inputs = new List<NodeGene>();
+            foreach (NodeGene n in Nodes) {
+                if (n.Type == NodeGene.NodeType.INPUT_NODE) {
+                    inputs.Add(n);
                 }
             }
 
