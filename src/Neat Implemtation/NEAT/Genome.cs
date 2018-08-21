@@ -38,19 +38,23 @@ namespace Neat_Implemtation
         /// </summary>
         /// <param name="inputs">List of inputs</param>
         /// <returns>Array of outputs</returns>
-        double[] Evaluate(List<double> inputs) {
+        public double[] Evaluate(List<double> inputs) {
             List<NodeGene> i = GetInputNodes();
 
             i.Sort((x, y) => x.Innovation.CompareTo(y.Innovation));
 
+            for (int k = 0; k < Nodes.Count; k++) {
+                Nodes[k].EvaluatedValue1 = 0;
+            }
+
             for (int k = 0; k < i.Count; k++) {
-                i[k].evaluatedValue = inputs[k];
+                i[k].EvaluatedValue1 = inputs[k];
             }
 
             foreach (ConnectionGene g in Connections) {
                 NodeGene nodeIn = GetNodeByID(g.InNode);
                 NodeGene nodeOut = GetNodeByID(g.OutNode);
-                nodeOut.evaluatedValue += nodeIn.sigmoid(nodeIn.evaluatedValue) * g.Weight;
+                nodeOut.EvaluatedValue1 += nodeIn.sigmoid(nodeIn.EvaluatedValue1) * g.Weight;
             }
 
             List<NodeGene> o = GetOutputNodes();
@@ -59,7 +63,7 @@ namespace Neat_Implemtation
             double[] outputs = new double[o.Count];
 
             for (int k = 0; k < o.Count; k++) {
-                outputs[k] = o[k].evaluatedValue;
+                outputs[k] = o[k].EvaluatedValue1;
             }
 
             return outputs;
@@ -169,7 +173,7 @@ namespace Neat_Implemtation
         public List<NodeGene> GetOutputNodes() {
             List<NodeGene> outputs = new List<NodeGene>();
             foreach (NodeGene n in Nodes) {
-                if (n.Type == NodeGene.NodeType.INPUT_NODE) {
+                if (n.Type == NodeGene.NodeType.OUTPUT_NODE) {
                     outputs.Add(n);
                 }
             }
@@ -411,13 +415,7 @@ namespace Neat_Implemtation
 
             return offspring;
         }
-
-        public bool EvaluationNetwork(List<float> inputs) {
-
-
-            return true;
-        }
-
+        
 
         // interface functions ////////////////
 

@@ -26,14 +26,7 @@ namespace Neat_Implemtation {
             get => sortingID;
 
             set  {
-                // If the connection is a self loop, we want to update very last as this should effect the next cycle as history. 
-                if (inNode == outNode) {
-                    sortingID = int.MaxValue - value;
-                }
-                else {
-                    sortingID = value;
-                }
-
+                   sortingID = value;
             }
         }
 
