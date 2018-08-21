@@ -15,9 +15,8 @@ namespace Neat_Implemtation  {
 
         public NodeType Type { get => type;  }
         public int Innovation { get => innovation; }
-        public double EvaluatedValue { get => sigmoid(evaluatedValue); set => EvaluatedValue = value; }
 
-        private double evaluatedValue;
+        public double evaluatedValue;
 
 
         public NodeGene(NodeType type, int id) {
@@ -29,7 +28,7 @@ namespace Neat_Implemtation  {
             return new NodeGene(type, innovation);
         }
 
-        public double sigmoid(double x)
+        public static double sigmoid(double x)
         {
             return 2.0 / (1.0 + Math.Exp(-4.9 * x)) - 1;
         }
@@ -70,7 +69,5 @@ namespace Neat_Implemtation  {
         public override int GetHashCode() {
             return innovation; // this is a global id
         }
-
-       
     }
 }

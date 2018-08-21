@@ -44,17 +44,17 @@ namespace Neat_Implemtation
             i.Sort((x, y) => x.Innovation.CompareTo(y.Innovation));
 
             for (int k = 0; k < Nodes.Count; k++) {
-                Nodes[k].EvaluatedValue1 = 0;
+                Nodes[k].evaluatedValue = 0;
             }
 
             for (int k = 0; k < i.Count; k++) {
-                i[k].EvaluatedValue1 = inputs[k];
+                i[k].evaluatedValue = inputs[k];
             }
 
             foreach (ConnectionGene g in Connections) {
                 NodeGene nodeIn = GetNodeByID(g.InNode);
                 NodeGene nodeOut = GetNodeByID(g.OutNode);
-                nodeOut.EvaluatedValue1 += nodeIn.sigmoid(nodeIn.EvaluatedValue1) * g.Weight;
+                nodeOut.evaluatedValue += nodeIn.evaluatedValue * g.Weight;
             }
 
             List<NodeGene> o = GetOutputNodes();
@@ -63,7 +63,7 @@ namespace Neat_Implemtation
             double[] outputs = new double[o.Count];
 
             for (int k = 0; k < o.Count; k++) {
-                outputs[k] = o[k].EvaluatedValue1;
+                outputs[k] = NodeGene.sigmoid(o[k].evaluatedValue);
             }
 
             return outputs;
