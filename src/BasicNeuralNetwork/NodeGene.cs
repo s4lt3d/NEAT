@@ -4,8 +4,7 @@ namespace BasicNeuralNetwork
 {
     class NodeGene : IEquatable<NodeGene>, IComparable<NodeGene>, ICloneable
     {
-        public enum NodeType
-        {
+        public enum NodeType {
             INPUT_NODE,
             OUTPUT_NODE,
             HIDDEN_NODE,
@@ -20,7 +19,7 @@ namespace BasicNeuralNetwork
         public int Innovation { get => innovation; }
         public int SortingID { get => sortingID; set => sortingID = value; }
 
-        public NodeGene(int innovation, NodeType type) {
+        public NodeGene(NodeType type, int innovation) {
             this.innovation = innovation;
             this.type = type;
         }
@@ -48,8 +47,22 @@ namespace BasicNeuralNetwork
 
         public object Clone()
         {
-            return new NodeGene(innovation, type);
+            return new NodeGene(type, innovation);
         }
 
+        public override string ToString()
+        {
+            string s = "{";
+            if (type == NodeType.INPUT_NODE)
+                s += "INPUT,  ";
+            else if (type == NodeType.OUTPUT_NODE)
+                s += "OUTPUT, ";
+            else if (type == NodeType.HIDDEN_NODE)
+                s += "HIDDEN, ";
+            else if (type == NodeType.BIAS_NODE)
+                s += "BIAS,   ";
+            s += innovation + "}";
+            return s;
+        }
     }
 }

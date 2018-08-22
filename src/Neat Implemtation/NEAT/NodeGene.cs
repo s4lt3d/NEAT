@@ -11,7 +11,7 @@ namespace Neat_Implemtation  {
 
         NodeType type;
         int innovation;
-        public int SortingID = -1;
+        int SortingID = -1;
 
         public NodeType Type { get => type;  }
         public int Innovation { get => innovation; }
