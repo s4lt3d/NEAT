@@ -16,11 +16,13 @@ namespace BasicNeuralNetwork
         public void BuildNode(NodeGene.NodeType type, int id) {
             NodeGene n = new NodeGene(type, id);
             Nodes.Add(id, n);
+            Sort();
         }
 
         public void BuildConnection(int inNode, int outNode, double weight, bool expressed, int id) {
             ConnectionGene g = new ConnectionGene(inNode, outNode, weight, expressed, id);
             Connections.Add(id, g);
+            Sort();
         }
 
         public void Sort()

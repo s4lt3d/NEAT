@@ -32,9 +32,6 @@ namespace BasicNeuralNetwork
             g.BuildConnection(6, 9, 1, true, 10);
             g.BuildConnection(1, 9, 1, true, 11);
 
-            g.Sort();
-
-
 
         }
     }
