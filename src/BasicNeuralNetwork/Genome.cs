@@ -60,8 +60,20 @@ namespace BasicNeuralNetwork
             return childNodes;
         }
 
-        //public double[] Evaluate(double[] inputs) {
+        private List<int> GetParentNodes(int nodeId) {
+            List<int> parentNodes = new List<int>();
+            foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
+                if (g.Value.OutNode == nodeId)
+                    parentNodes.Add(g.Value.OutNode);
+            }
+            return parentNodes;
+        }
 
-        //}
+        public double[] Evaluate(double[] inputs) {
+            // do feed forward evaluation first
+
+            // then back propogation
+            return null;
+        }
     }
 }
