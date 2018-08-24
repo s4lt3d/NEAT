@@ -69,8 +69,24 @@ namespace BasicNeuralNetwork
             return parentNodes;
         }
 
+        public double GetWeightedInputSum(int nodeId) {
+            double val = 0;
+            foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
+                if(g.Value.Expressed)
+                    if (g.Value.OutNode == nodeId)
+                        val += g.Value.Weight * Nodes[g.Value.InNode].Value;
+            }
+
+            return val;
+        }
+
         public double[] Evaluate(double[] inputs) {
             // do feed forward evaluation first
+            foreach (int nodeToEvaluate in sortedNodes) {
+                Nodes[nodeToEvaluate].Value = NodeGene.EvaluationFunction(GetWeightedInputSum(nodeToEvaluate));
+            }
+
+
 
             // then back propogation
             return null;

@@ -103,32 +103,35 @@ namespace Neat_Implemtation
         /// Topological Depth-first search.
         /// </summary>
         public void Sort() {
-            sorted = new List<NodeGene>(Connections.Count);
-            visited = new List<NodeGene>(Connections.Count);
+            //sorted = new List<NodeGene>(Connections.Count);
+            //visited = new List<NodeGene>(Connections.Count);
 
-            foreach (NodeGene g in Nodes)
-                g.SortingID = -1;
+            //foreach (NodeGene g in Nodes)
+            //    g.SortingID = -1;
 
-            foreach (NodeGene g in GetInputNodes()) {
-                SortNode(g);
-            }
+            //foreach (NodeGene g in GetInputNodes()) {
+            //    SortNode(g);
+            //}
 
-            for(int i = 0; i < sorted.Count; i++) {
-                sorted[i].SortingID = i;
-            }
+            //for(int i = 0; i < sorted.Count; i++) {
+            //    sorted[i].SortingID = i;
+            //}
 
-            nodes.Sort();
-            int k = 0;
-            foreach (NodeGene n in Nodes) {
-                foreach (ConnectionGene g in GetConnectionByInNode(n.Innovation)) {
-                    g.SortingID = k++;
-                }
-            }
+            //nodes.Sort();
+            //int k = 0;
+            //foreach (NodeGene n in Nodes) {
+            //    foreach (ConnectionGene g in GetConnectionByInNode(n.Innovation)) {
+            //        g.SortingID = k++;
+            //    }
+            //}
 
-            connections.Sort();
+            //connections.Sort();
 
-            visited.Clear();
-            sorted.Clear();
+            //visited.Clear();
+            //sorted.Clear();
+
+
+            
         }
 
         /// <summary>

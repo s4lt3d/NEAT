@@ -14,10 +14,12 @@ namespace BasicNeuralNetwork
         private NodeType type;
         private int innovation;
         private int sortingID = -1;
+        private double value = 0;
 
         public NodeType Type { get => type; }
         public int Innovation { get => innovation; }
         public int SortingID { get => sortingID; set => sortingID = value; }
+        public double Value { get => value; set => this.value = value; }
 
         public NodeGene(NodeType type, int innovation) {
             this.innovation = innovation;
@@ -63,6 +65,10 @@ namespace BasicNeuralNetwork
                 s += "BIAS,   ";
             s += innovation + "}";
             return s;
+        }
+
+        public static double EvaluationFunction(double value) {
+            return value;
         }
     }
 }
