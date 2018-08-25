@@ -46,7 +46,7 @@ namespace BasicNeuralNetwork
             {
                 SortNode(g.Key);
             }
-            
+            sortedNodes.Reverse();
             visitedNodes.Clear();
         }
 
@@ -94,7 +94,7 @@ namespace BasicNeuralNetwork
                         val += g.Value.Weight * Nodes[g.Value.InNode].Value;
             }
 
-            return val;
+            return NodeGene.EvaluationFunction(val);
         }
 
         public double[] Evaluate(double[] inputs) {
@@ -107,7 +107,7 @@ namespace BasicNeuralNetwork
             
             // do feed forward evaluation
             foreach (int nodeToEvaluate in sortedNodes) {
-                Nodes[nodeToEvaluate].Value = NodeGene.EvaluationFunction(GetWeightedInputSum(nodeToEvaluate));
+                Nodes[nodeToEvaluate].Value = GetWeightedInputSum(nodeToEvaluate);
             }
 
             // get output values

@@ -32,7 +32,7 @@ namespace BasicNeuralNetwork
             if (other == null) // sort nulls to end
                 return -1;
 
-            if (other.SortingID > SortingID)
+            if (other.SortingID < SortingID)
             {
                 return 1;
             }
@@ -68,7 +68,7 @@ namespace BasicNeuralNetwork
         }
 
         public static double EvaluationFunction(double value) {
-            return value;
+            return 1 / (1 + Math.Exp(-value));
         }
     }
 }
