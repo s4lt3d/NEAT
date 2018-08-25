@@ -16,8 +16,8 @@ namespace BasicNeuralNetwork
 
         public int InNode { get => inNode; }
         public int OutNode { get => outNode; }
-        public double Weight { get => weight; }
-        public bool Expressed { get => expressed; }
+        public double Weight { get => weight; set => weight = value; }
+        public bool Expressed { get => expressed; set => expressed = value; }
         public int Innovation { get => innovation; }
 
         public ConnectionGene(int inNode, int outNode, double weight, bool expressed, int innovation)

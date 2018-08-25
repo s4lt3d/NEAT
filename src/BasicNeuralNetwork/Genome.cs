@@ -14,8 +14,12 @@ namespace BasicNeuralNetwork
         List<int> outputNodes = new List<int>();
         List<int> sortedNodes;
         List<int> visitedNodes;
+        Random r = new Random();
 
-        public void BuildNode(NodeGene.NodeType type, int id) {
+        public int BuildNode(NodeGene.NodeType type, int id = -1) { 
+            if(id < 0) {
+                id = InnovationGenerator.NextInnovationNumber;
+            }
             NodeGene n = new NodeGene(type, id);
             Nodes.Add(id, n);
 
@@ -29,12 +33,17 @@ namespace BasicNeuralNetwork
 
             inputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
             outputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
+            return id;
         }
 
-        public void BuildConnection(int inNode, int outNode, double weight, bool expressed, int id, bool reversed = false) {
+        public int BuildConnection(int inNode, int outNode, double weight, bool expressed, int id = -1) {
+            if (id < 0) {
+                id = InnovationGenerator.NextInnovationNumber;
+            }
             ConnectionGene g = new ConnectionGene(inNode, outNode, weight, expressed, id);
             ForwardConnections.Add(id, g);
             Sort();
+            return id;
         }
         
         public void Sort()
@@ -116,6 +125,82 @@ namespace BasicNeuralNetwork
             }
 
             return output;
+        }
+
+        private int ContainsConnection(int n1, int n2)
+        {
+            foreach (KeyValuePair<int, ConnectionGene> cg in ForwardConnections)
+            {
+                if (cg.Value.InNode == n1)
+                {
+                    if (cg.Value.OutNode == n2)
+                    {
+                        return cg.Key;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// In the add connection mutation, a single new connection gene with a 
+        /// random weight is added connecting two previously unconnected nodes.
+        /// </summary>
+        /// <param name="r"></param>
+        public void AddConnectionMutation()
+        {
+            int n1 = r.Next(0, Nodes.Count); // (from 0 and count -1)
+            int n2 = r.Next(0, Nodes.Count);
+
+            int k = 0; // prevents runaway
+            while (k++ < 64)
+            {
+                n1 = r.Next(0, Nodes.Count);
+                n2 = r.Next(0, Nodes.Count);
+
+                // cases which are not allowed.
+                // can't have existing connection
+                // can't change bias
+                // can't change other inputs directly
+                // self connections are fine
+                if (ContainsConnection(n1, n2) == -1)
+                {
+                    if (Nodes[n2].Type != NodeGene.NodeType.INPUT_NODE)
+                        if (Nodes[n2].Type != NodeGene.NodeType.BIAS_NODE)
+                            break;
+                }
+            }
+
+            if (k >= 64) {
+                return; // failed to find a valid new connection
+            }
+            
+            float w = (float)(r.NextDouble() * 2 - 1);
+            BuildConnection(n1, n2, w, true);
+        }
+
+        /// <summary>
+        ///  In the add node mutation, an existing connection is split and the 
+        ///  new node placed where the old connection used to be. 
+        ///  The old connection is disabled and two new connections are added 
+        ///  to the genome. The new connection leading into the new node 
+        ///  receives a weight of 1, and the new connection leading out 
+        ///  receives the same weight as the old connection.
+        /// </summary>
+        /// <param name="r"></param>
+        public void AddNodeMutation()
+        {
+            int c = r.Next(0, ForwardConnections.Count); // (from 0 and count -1)
+            int newNodeId = BuildNode(NodeGene.NodeType.HIDDEN_NODE);
+            
+            ForwardConnections[c].Expressed = false;
+            int oldInNode = ForwardConnections[c].InNode;
+            int oldOutNode = ForwardConnections[c].OutNode;
+            double oldWeight = ForwardConnections[c].Weight;
+
+            BuildConnection(oldInNode, newNodeId, 1, true);
+            BuildConnection(newNodeId, oldOutNode, oldWeight, true);
         }
     }
 }

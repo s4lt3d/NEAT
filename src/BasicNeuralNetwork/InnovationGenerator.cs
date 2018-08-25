@@ -10,6 +10,6 @@ namespace BasicNeuralNetwork
     {
         private static int innovation = 0;
 
-        public static int Innovation { get => innovation++; }
+        public static int NextInnovationNumber { get => innovation++; }
     }
 }
