@@ -10,13 +10,25 @@ namespace BasicNeuralNetwork
     {
         Dictionary<int, NodeGene> Nodes = new Dictionary<int, NodeGene>();
         Dictionary<int, ConnectionGene> ForwardConnections = new Dictionary<int, ConnectionGene>();
+        List<int> inputNodes = new List<int>();
+        List<int> outputNodes = new List<int>();
         List<int> sortedNodes;
         List<int> visitedNodes;
 
         public void BuildNode(NodeGene.NodeType type, int id) {
             NodeGene n = new NodeGene(type, id);
             Nodes.Add(id, n);
-            Sort();
+
+            // these lists speed things up during evaluation
+            if (type == NodeGene.NodeType.INPUT_NODE) {
+                inputNodes.Add(id);
+            }
+            else if(type == NodeGene.NodeType.OUTPUT_NODE){
+                outputNodes.Add(id);
+            }
+
+            inputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
+            outputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
         }
 
         public void BuildConnection(int inNode, int outNode, double weight, bool expressed, int id, bool reversed = false) {
@@ -71,6 +83,11 @@ namespace BasicNeuralNetwork
 
         public double GetWeightedInputSum(int nodeId) {
             double val = 0;
+
+            // inputs and bias don't have parents
+            if (Nodes[nodeId].Type == NodeGene.NodeType.INPUT_NODE || Nodes[nodeId].Type == NodeGene.NodeType.BIAS_NODE)
+                return Nodes[nodeId].Value;
+
             foreach (KeyValuePair<int, ConnectionGene> g in ForwardConnections) {
                 if(g.Value.Expressed)
                     if (g.Value.OutNode == nodeId)
@@ -81,15 +98,24 @@ namespace BasicNeuralNetwork
         }
 
         public double[] Evaluate(double[] inputs) {
-            // do feed forward evaluation first
+            double[] output = new double[outputNodes.Count];
+
+            // set input values
+            for (int i = 0; i < inputs.Length; i++) {
+                Nodes[inputNodes[i]].Value = inputs[i];
+            }            
+            
+            // do feed forward evaluation
             foreach (int nodeToEvaluate in sortedNodes) {
                 Nodes[nodeToEvaluate].Value = NodeGene.EvaluationFunction(GetWeightedInputSum(nodeToEvaluate));
             }
 
+            // get output values
+            for (int i = 0; i < outputNodes.Count; i++) {
+                output[i] = Nodes[outputNodes[i]].Value;
+            }
 
-
-            // then back propogation
-            return null;
+            return output;
         }
     }
 }
