@@ -9,17 +9,20 @@ namespace BasicNeuralNetwork
     class Genome
     {
         Dictionary<int, NodeGene> Nodes = new Dictionary<int, NodeGene>();
-        Dictionary<int, ConnectionGene> ForwardConnections = new Dictionary<int, ConnectionGene>();
+        Dictionary<int, ConnectionGene> Connections = new Dictionary<int, ConnectionGene>();
         List<int> inputNodes = new List<int>();
         List<int> outputNodes = new List<int>();
         List<int> sortedNodes;
         List<int> visitedNodes;
         Random r = new Random();
 
-        public int BuildNode(NodeGene.NodeType type, int id = -1) { 
-            if(id < 0) {
+        public int BuildNode(NodeGene.NodeType type, int id = -1) {
+            if (Nodes.ContainsKey(id)) // we don't add nodes we already have
+                return -1;
+            else if (id < 0) {
                 id = InnovationGenerator.NextInnovationNumber;
             }
+            
             NodeGene n = new NodeGene(type, id);
             Nodes.Add(id, n);
 
@@ -37,19 +40,22 @@ namespace BasicNeuralNetwork
         }
 
         public int BuildConnection(int inNode, int outNode, double weight, bool expressed, int id = -1) {
-            if (id < 0) {
+            if (Connections.ContainsKey(id))
+                return -1;
+            else if (id < 0) {
                 id = InnovationGenerator.NextInnovationNumber;
             }
+
             ConnectionGene g = new ConnectionGene(inNode, outNode, weight, expressed, id);
-            ForwardConnections.Add(id, g);
+            Connections.Add(id, g);
             Sort();
             return id;
         }
         
         public void Sort()
         {
-            sortedNodes = new List<int>(ForwardConnections.Count);
-            visitedNodes = new List<int>(ForwardConnections.Count);
+            sortedNodes = new List<int>(Connections.Count);
+            visitedNodes = new List<int>(Connections.Count);
             
             foreach (KeyValuePair<int, NodeGene> g in Nodes)
             {
@@ -74,7 +80,7 @@ namespace BasicNeuralNetwork
         private List<int> GetChildNodes(int nodeId)
         {
             List<int> childNodes = new List<int>();
-            foreach (KeyValuePair<int, ConnectionGene> g in ForwardConnections) {
+            foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
                 if (g.Value.InNode == nodeId)
                     childNodes.Add(g.Value.OutNode);
             }
@@ -83,7 +89,7 @@ namespace BasicNeuralNetwork
 
         private List<int> GetParentNodes(int nodeId) {
             List<int> parentNodes = new List<int>();
-            foreach (KeyValuePair<int, ConnectionGene> g in ForwardConnections) {
+            foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
                 if (g.Value.OutNode == nodeId)
                     parentNodes.Add(g.Value.OutNode);
             }
@@ -97,7 +103,7 @@ namespace BasicNeuralNetwork
             if (Nodes[nodeId].Type == NodeGene.NodeType.INPUT_NODE || Nodes[nodeId].Type == NodeGene.NodeType.BIAS_NODE)
                 return Nodes[nodeId].Value;
 
-            foreach (KeyValuePair<int, ConnectionGene> g in ForwardConnections) {
+            foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
                 if(g.Value.Expressed)
                     if (g.Value.OutNode == nodeId)
                         val += g.Value.Weight * Nodes[g.Value.InNode].Value;
@@ -129,7 +135,7 @@ namespace BasicNeuralNetwork
 
         private int ContainsConnection(int n1, int n2)
         {
-            foreach (KeyValuePair<int, ConnectionGene> cg in ForwardConnections)
+            foreach (KeyValuePair<int, ConnectionGene> cg in Connections)
             {
                 if (cg.Value.InNode == n1)
                 {
@@ -162,8 +168,7 @@ namespace BasicNeuralNetwork
                 // cases which are not allowed.
                 // can't have existing connection
                 // can't change bias
-                // can't change other inputs directly
-                // self connections are fine
+                // can't connect from one input to another input
                 if (ContainsConnection(n1, n2) == -1)
                 {
                     if (Nodes[n2].Type != NodeGene.NodeType.INPUT_NODE)
@@ -191,16 +196,97 @@ namespace BasicNeuralNetwork
         /// <param name="r"></param>
         public void AddNodeMutation()
         {
-            int c = r.Next(0, ForwardConnections.Count); // (from 0 and count -1)
+            int c = r.Next(0, Connections.Count); // (from 0 and count -1)
             int newNodeId = BuildNode(NodeGene.NodeType.HIDDEN_NODE);
             
-            ForwardConnections[c].Expressed = false;
-            int oldInNode = ForwardConnections[c].InNode;
-            int oldOutNode = ForwardConnections[c].OutNode;
-            double oldWeight = ForwardConnections[c].Weight;
+            Connections[c].Expressed = false;
+            int oldInNode = Connections[c].InNode;
+            int oldOutNode = Connections[c].OutNode;
+            double oldWeight = Connections[c].Weight;
 
             BuildConnection(oldInNode, newNodeId, 1, true);
             BuildConnection(newNodeId, oldOutNode, oldWeight, true);
+        }
+
+
+        /// <summary>
+        /// A comparison of compatibiltiy before mating
+        /// </summary>
+        /// <param name="mate">The other genome to mate with</param>
+        /// <returns></returns>
+        public double Compatibility(Genome mate)
+        {
+            int disjoint = 0;
+            double weightDifference = 0;
+            double weightDifferenceAvg = 0;
+            int matches = 0;
+
+            int disjointGenes = 0;
+            for(int i = 0; i < Connections.Count; i++) {
+                bool found = false;
+                ConnectionGene myGene = Connections[i];
+                for(int j = 0; j < mate.Connections.Count; j++) {
+                    ConnectionGene mateGene = mate.Connections[j];
+                    if (mateGene.Innovation == myGene.Innovation)
+                    {
+                        found = true;
+                        matches++;
+                        weightDifference += Math.Abs(mateGene.Weight - myGene.Weight);
+                        break;
+                    }
+                }
+                if (found == false)
+                {
+                    disjointGenes++;
+                }
+            }
+
+            weightDifferenceAvg = weightDifference / matches;
+
+            double delta = (double)disjoint / Math.Max(mate.Connections.Count, Connections.Count) + weightDifferenceAvg;
+
+            return delta;
+        }
+
+        /// <summary>
+        /// Breeding! When crossing over, the  genes in both genomes with the same innovation numbers are lined up.
+        /// These genes are called matching genes.Genes that do not match are either disjoint or excess, depending
+        /// on whether they occur within or outside the range of the other parent’s innovation
+        /// numbers.They represent structure that is not present in the other genome.
+        /// </summary>
+        /// <param name="mate">Should be the most fit</param>
+        /// <returns></returns>
+        public Genome Crossover(Genome mate) {
+            Genome self = this; // is this the female of the two? 
+            Genome offspring = new Genome();
+
+            foreach (KeyValuePair<int, NodeGene> node in mate.Nodes) {
+                offspring.BuildNode(node.Value.Type, node.Value.Innovation);
+            }
+            foreach (KeyValuePair<int, NodeGene> node in Nodes) {
+                offspring.BuildNode(node.Value.Type, node.Value.Innovation);
+            }
+
+            foreach (KeyValuePair<int, ConnectionGene> cp1 in mate.Connections) {
+                if (Connections.ContainsKey(cp1.Key)) {
+                    ConnectionGene cp2 = Connections[cp1.Key];
+                    if (r.NextDouble() > 0.5) {
+                        offspring.BuildConnection(cp1.Value.InNode, cp1.Value.OutNode, cp1.Value.Weight, cp1.Value.Expressed, cp1.Value.Innovation);
+                    }
+                    else {
+                        offspring.BuildConnection(cp2.InNode, cp2.OutNode, cp2.Weight, cp2.Expressed, cp2.Innovation);
+                    }
+                }
+                else {
+                    offspring.BuildConnection(cp1.Value.InNode, cp1.Value.OutNode, cp1.Value.Weight, cp1.Value.Expressed, cp1.Value.Innovation);
+                }
+            }
+
+            foreach (KeyValuePair<int, ConnectionGene> cp2 in Connections) {
+                offspring.BuildConnection(cp2.Value.InNode, cp2.Value.OutNode, cp2.Value.Weight, cp2.Value.Expressed, cp2.Value.Innovation);
+            }
+
+            return offspring;
         }
     }
 }
