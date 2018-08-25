@@ -13,23 +13,20 @@ namespace BasicNeuralNetwork
         private double weight;
         private bool expressed;
         private int innovation;
-        private bool reversed;
 
         public int InNode { get => inNode; }
         public int OutNode { get => outNode; }
         public double Weight { get => weight; }
         public bool Expressed { get => expressed; }
-        public bool Reversed { get => reversed; }
         public int Innovation { get => innovation; }
 
-        public ConnectionGene(int inNode, int outNode, double weight, bool expressed, int innovation, bool reversed)
+        public ConnectionGene(int inNode, int outNode, double weight, bool expressed, int innovation)
         {
             this.inNode = inNode;
             this.outNode = outNode;
             this.weight = weight;
             this.expressed = expressed;
             this.innovation = innovation;
-            this.reversed = reversed;
         }
 
         // Functions for generic list sorting and comparing. Used for topological sorting implemented in Genome class
@@ -51,7 +48,7 @@ namespace BasicNeuralNetwork
 
         public object Clone()
         {
-            return new ConnectionGene(inNode, outNode, weight, expressed, innovation, reversed);
+            return new ConnectionGene(inNode, outNode, weight, expressed, innovation);
         }
     }
 }

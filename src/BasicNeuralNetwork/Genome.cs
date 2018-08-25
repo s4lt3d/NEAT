@@ -20,7 +20,7 @@ namespace BasicNeuralNetwork
         }
 
         public void BuildConnection(int inNode, int outNode, double weight, bool expressed, int id, bool reversed = false) {
-            ConnectionGene g = new ConnectionGene(inNode, outNode, weight, expressed, id, reversed);
+            ConnectionGene g = new ConnectionGene(inNode, outNode, weight, expressed, id);
             ForwardConnections.Add(id, g);
             Sort();
         }
