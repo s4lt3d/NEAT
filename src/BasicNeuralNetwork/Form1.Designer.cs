@@ -29,14 +29,27 @@
         private void InitializeComponent()
         {
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.forceGraphVisualizer1 = new ForceDirected.ForceGraphVisualizer();
             this.SuspendLayout();
+            // 
+            // forceGraphVisualizer1
+            // 
+            this.forceGraphVisualizer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.forceGraphVisualizer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.forceGraphVisualizer1.Location = new System.Drawing.Point(12, 12);
+            this.forceGraphVisualizer1.Name = "forceGraphVisualizer1";
+            this.forceGraphVisualizer1.Size = new System.Drawing.Size(719, 485);
+            this.forceGraphVisualizer1.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(685, 509);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ClientSize = new System.Drawing.Size(743, 509);
+            this.Controls.Add(this.forceGraphVisualizer1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -46,6 +59,7 @@
 
         #endregion
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private ForceDirected.ForceGraphVisualizer forceGraphVisualizer1;
     }
 }
 

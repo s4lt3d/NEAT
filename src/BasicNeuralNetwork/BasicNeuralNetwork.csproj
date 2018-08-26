@@ -38,6 +38,10 @@
     <Reference Include="JSCore, Version=1.0.1.2, Culture=neutral, PublicKeyToken=d6b823da6d3fa04b, processorArchitecture=x86">
       <HintPath>..\packages\OpenWebKitSharp.1.0.7\lib\net40\JSCore.dll</HintPath>
     </Reference>
+    <Reference Include="Lattice, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Lattice.dll</HintPath>
+    </Reference>
     <Reference Include="MyDownloader.App, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenWebKitSharp.1.0.7\lib\net40\MyDownloader.App.dll</HintPath>
     </Reference>
@@ -64,9 +68,23 @@
     <Reference Include="TabStrip, Version=2.0.2523.29272, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenWebKitSharp.1.0.7\lib\net40\TabStrip.dll</HintPath>
     </Reference>
+    <Reference Include="Threading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Threading.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionGene.cs" />
+    <Compile Include="ForceDirectedGraph\Edge.cs" />
+    <Compile Include="ForceDirectedGraph\Node.cs" />
+    <Compile Include="ForceDirectedGraph\Octree.cs" />
+    <Compile Include="ForceDirectedGraph\World.cs" />
+    <Compile Include="ForceGraphVisualizer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ForceGraphVisualizer.Designer.cs">
+      <DependentUpon>ForceGraphVisualizer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +96,9 @@
     <Compile Include="NodeGene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ForceGraphVisualizer.resx">
+      <DependentUpon>ForceGraphVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,6 +123,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dependencies\Lattice.dll" />
+    <Content Include="Dependencies\Threading.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
