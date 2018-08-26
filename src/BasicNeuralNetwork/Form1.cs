@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -52,28 +53,19 @@ namespace BasicNeuralNetwork {
             g.BuildConnection(1, 9, 1, true, 11);
             g.BuildConnection(2, 9, 1, true, 11);
 
-            double[] output = g.Evaluate(new double[] { 1, 1 });
+            DrawGenome(forceGraphVisualizer1, g);
 
-            forceGraphVisualizer1.ClearGraph();
-            forceGraphVisualizer1.AddNode(1, Color.Red);
-            forceGraphVisualizer1.AddNode(2, Color.Red);
-            forceGraphVisualizer1.AddNode(3, Color.Yellow);
-            forceGraphVisualizer1.AddNode(6, Color.White);
-            forceGraphVisualizer1.AddNode(9, Color.White);
+        }
 
-            forceGraphVisualizer1.AddEdge(1, 3);
-            forceGraphVisualizer1.AddEdge(2, 3);
-            forceGraphVisualizer1.AddEdge(3, 6);
-            forceGraphVisualizer1.AddEdge(1, 6);
-            forceGraphVisualizer1.AddEdge(6, 9);
-            forceGraphVisualizer1.AddEdge(1, 9);
-            forceGraphVisualizer1.AddEdge(2, 9);
+        private void DrawGenome(ForceDirected.ForceGraphVisualizer graph, Genome genome) {
+            graph.ClearGraph();
+            foreach(KeyValuePair<int, NodeGene> node in genome.Nodes) {
+                graph.AddNode(node.Value.Innovation, Color.White);
+            }
 
-
-
-
-
-
+            foreach (KeyValuePair<int, ConnectionGene> connection in genome.Connections) {
+                graph.AddEdge(connection.Value.InNode, connection.Value.OutNode);
+            }
         }
     }
 }

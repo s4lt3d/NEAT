@@ -8,13 +8,16 @@ namespace BasicNeuralNetwork
 {
     class Genome
     {
-        Dictionary<int, NodeGene> Nodes = new Dictionary<int, NodeGene>();
-        Dictionary<int, ConnectionGene> Connections = new Dictionary<int, ConnectionGene>();
+        Dictionary<int, NodeGene> nodes = new Dictionary<int, NodeGene>();
+        Dictionary<int, ConnectionGene> connections = new Dictionary<int, ConnectionGene>();
         List<int> inputNodes = new List<int>();
         List<int> outputNodes = new List<int>();
         List<int> sortedNodes;
         List<int> visitedNodes;
         Random r = new Random();
+
+        public Dictionary<int, NodeGene> Nodes { get => nodes; set => nodes = value; }
+        public Dictionary<int, ConnectionGene> Connections { get => connections; set => connections = value; }
 
         public int BuildNode(NodeGene.NodeType type, int id = -1) {
             if (Nodes.ContainsKey(id)) // we don't add nodes we already have
