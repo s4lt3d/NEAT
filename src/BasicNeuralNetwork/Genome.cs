@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NEATNeuralNetwork
-{
-    class Genome
-    {
+namespace NEATNeuralNetwork {
+    class Genome {
         Dictionary<int, NodeGene> nodes = new Dictionary<int, NodeGene>();
         Dictionary<int, ConnectionGene> connections = new Dictionary<int, ConnectionGene>();
         List<int> inputNodes = new List<int>();
@@ -25,7 +21,7 @@ namespace NEATNeuralNetwork
             else if (id < 0) {
                 id = InnovationGenerator.NextInnovationNumber;
             }
-            
+
             NodeGene n = new NodeGene(type, id);
             Nodes.Add(id, n);
 
@@ -33,7 +29,7 @@ namespace NEATNeuralNetwork
             if (type == NodeGene.NodeType.INPUT_NODE) {
                 inputNodes.Add(id);
             }
-            else if(type == NodeGene.NodeType.OUTPUT_NODE){
+            else if (type == NodeGene.NodeType.OUTPUT_NODE) {
                 outputNodes.Add(id);
             }
 
@@ -54,34 +50,29 @@ namespace NEATNeuralNetwork
             Sort();
             return id;
         }
-        
-        public void Sort()
-        {
+
+        public void Sort() {
             sortedNodes = new List<int>(Connections.Count);
             visitedNodes = new List<int>(Connections.Count);
-            
-            foreach (KeyValuePair<int, NodeGene> g in Nodes)
-            {
+
+            foreach (KeyValuePair<int, NodeGene> g in Nodes) {
                 SortNode(g.Key);
             }
             sortedNodes.Reverse();
             visitedNodes.Clear();
         }
 
-        private void SortNode(int nodeId)
-        {
+        private void SortNode(int nodeId) {
             if (visitedNodes.Contains(nodeId))
                 return;
             visitedNodes.Add(nodeId);
-            foreach (int childNode in GetChildNodes(nodeId))
-            {
+            foreach (int childNode in GetChildNodes(nodeId)) {
                 SortNode(childNode);
             }
             sortedNodes.Add(nodeId);
         }
 
-        private List<int> GetChildNodes(int nodeId)
-        {
+        private List<int> GetChildNodes(int nodeId) {
             List<int> childNodes = new List<int>();
             foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
                 if (g.Value.InNode == nodeId)
@@ -107,7 +98,7 @@ namespace NEATNeuralNetwork
                 return Nodes[nodeId].Value;
 
             foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
-                if(g.Value.Expressed)
+                if (g.Value.Expressed)
                     if (g.Value.OutNode == nodeId)
                         val += g.Value.Weight * Nodes[g.Value.InNode].Value;
             }
@@ -121,8 +112,8 @@ namespace NEATNeuralNetwork
             // set input values
             for (int i = 0; i < inputs.Length; i++) {
                 Nodes[inputNodes[i]].Value = inputs[i];
-            }            
-            
+            }
+
             // do feed forward evaluation
             foreach (int nodeToEvaluate in sortedNodes) {
                 Nodes[nodeToEvaluate].Value = GetWeightedInputSum(nodeToEvaluate);
@@ -136,14 +127,10 @@ namespace NEATNeuralNetwork
             return output;
         }
 
-        private int ContainsConnection(int n1, int n2)
-        {
-            foreach (KeyValuePair<int, ConnectionGene> cg in Connections)
-            {
-                if (cg.Value.InNode == n1)
-                {
-                    if (cg.Value.OutNode == n2)
-                    {
+        private int ContainsConnection(int n1, int n2) {
+            foreach (KeyValuePair<int, ConnectionGene> cg in Connections) {
+                if (cg.Value.InNode == n1) {
+                    if (cg.Value.OutNode == n2) {
                         return cg.Key;
                     }
                 }
@@ -157,17 +144,17 @@ namespace NEATNeuralNetwork
         /// </summary>
         public void mutateConnectionWeights() {
             foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
-                if(r.NextDouble() > 0.5)
+                if (r.NextDouble() > 0.5) {
                     g.Value.Weight += (float)(2 * r.NextDouble() - 1);
                 }
             }
         }
+    
 
         /// <summary>
         /// In the add connection mutation, a single new connection gene with a 
         /// random weight is added connecting two previously unconnected nodes.
         /// </summary>
-        /// <param name="r"></param>
         public void AddConnectionMutation()
         {
             int n1 = r.Next(0, Nodes.Count); // (from 0 and count -1)

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-
+using NEATNeuralNetwork;
 
 namespace NEATNeuralNetwork {
     public partial class Form1 : Form
@@ -15,30 +15,9 @@ namespace NEATNeuralNetwork {
             InitializeComponent();
 
         }
-
-        private void MakeWebBrowserUseIE9() {
-            string appName = "";
-            try {
-                appName = Path.GetFileName(Assembly.GetEntryAssembly().Location);
-
-                const string IE_EMULATION = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION";
-
-                using (var fbeKey = Registry.CurrentUser.OpenSubKey(IE_EMULATION, true)) {
-
-                    fbeKey.SetValue(appName, 9000, RegistryValueKind.DWord);
-
-                }
-            }
-
-            catch (Exception ex) {
-                MessageBox.Show(appName + "\n" + ex.ToString(), "Unexpected error setting browser mode!");
-            }
-        }
-
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
-            MakeWebBrowserUseIE9();
             Genome p1 = new Genome();
             p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
             p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
