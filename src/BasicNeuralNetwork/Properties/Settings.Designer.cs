@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BasicNeuralNetwork.Properties
+namespace NEATNeuralNetwork.Properties
 {
 
 

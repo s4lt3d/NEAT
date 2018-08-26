@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BasicNeuralNetwork
+namespace NEATNeuralNetwork
 {
     class NodeGene : IEquatable<NodeGene>, IComparable<NodeGene>, ICloneable
     {

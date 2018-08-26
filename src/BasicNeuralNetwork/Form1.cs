@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 
-namespace BasicNeuralNetwork {
+namespace NEATNeuralNetwork {
     public partial class Form1 : Form
     {
         public Form1()

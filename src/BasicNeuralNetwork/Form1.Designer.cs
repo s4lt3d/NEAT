@@ -1,4 +1,4 @@
-﻿namespace BasicNeuralNetwork
+﻿namespace NEATNeuralNetwork
 {
     partial class Form1
     {
