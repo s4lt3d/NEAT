@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neat Implemtation", "Neat Implemtation\Neat Implemtation.csproj", "{CA3B3EB3-DEDB-44A7-9DAB-34F44C297581}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicNeuralNetwork", "BasicNeuralNetwork\BasicNeuralNetwork.csproj", "{D73D3519-E317-4439-A4DE-B5C502FB9A5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEAT Implementation", "BasicNeuralNetwork\NEAT Implementation.csproj", "{D73D3519-E317-4439-A4DE-B5C502FB9A5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CA3B3EB3-DEDB-44A7-9DAB-34F44C297581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA3B3EB3-DEDB-44A7-9DAB-34F44C297581}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA3B3EB3-DEDB-44A7-9DAB-34F44C297581}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA3B3EB3-DEDB-44A7-9DAB-34F44C297581}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D73D3519-E317-4439-A4DE-B5C502FB9A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D73D3519-E317-4439-A4DE-B5C502FB9A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D73D3519-E317-4439-A4DE-B5C502FB9A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
