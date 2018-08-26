@@ -72,9 +72,11 @@
     </Compile>
     <Compile Include="Genome.cs" />
     <Compile Include="InnovationGenerator.cs" />
+    <Compile Include="NEATSettings.cs" />
     <Compile Include="NodeGene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Species.cs" />
     <EmbeddedResource Include="ForceGraphVisualizer.resx">
       <DependentUpon>ForceGraphVisualizer.cs</DependentUpon>
     </EmbeddedResource>

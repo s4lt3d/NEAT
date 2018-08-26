@@ -10,10 +10,13 @@ namespace NEATNeuralNetwork {
         List<int> outputNodes = new List<int>();
         List<int> sortedNodes;
         List<int> visitedNodes;
+        double fitness;
+
         Random r = new Random();
 
         public Dictionary<int, NodeGene> Nodes { get => nodes; set => nodes = value; }
         public Dictionary<int, ConnectionGene> Connections { get => connections; set => connections = value; }
+        public double Fitness { get => fitness; set => fitness = value; }
 
         public int BuildNode(NodeGene.NodeType type, int id = -1) {
             if (Nodes.ContainsKey(id)) // we don't add nodes we already have
@@ -150,7 +153,6 @@ namespace NEATNeuralNetwork {
             }
         }
     
-
         /// <summary>
         /// In the add connection mutation, a single new connection gene with a 
         /// random weight is added connecting two previously unconnected nodes.
@@ -209,13 +211,12 @@ namespace NEATNeuralNetwork {
             BuildConnection(newNodeId, oldOutNode, oldWeight, true);
         }
 
-
         /// <summary>
         /// A comparison of compatibiltiy before mating
         /// </summary>
         /// <param name="mate">The other genome to mate with</param>
         /// <returns></returns>
-        public double Compatibility(Genome mate)
+        public bool Compatibility(Genome mate)
         {
             int disjoint = 0;
             double weightDifference = 0;
@@ -246,7 +247,7 @@ namespace NEATNeuralNetwork {
 
             double delta = (double)disjoint / Math.Max(mate.Connections.Count, Connections.Count) + weightDifferenceAvg;
 
-            return delta;
+            return delta < NEATSettings.CompatibilityThreshold;
         }
 
         /// <summary>
