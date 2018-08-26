@@ -142,7 +142,7 @@ namespace NEATNeuralNetwork {
         /// <summary>
         /// Connection weights mutate as in any NE system, with each connection either perturbed or not at each generation.
         /// </summary>
-        public void mutateConnectionWeights() {
+        public void MutateConnectionWeights() {
             foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
                 if (r.NextDouble() > 0.5) {
                     g.Value.Weight += (float)(2 * r.NextDouble() - 1);
