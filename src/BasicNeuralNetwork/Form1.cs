@@ -39,21 +39,41 @@ namespace BasicNeuralNetwork {
         private void Form1_Load(object sender, EventArgs e)
         {
             MakeWebBrowserUseIE9();
-            Genome g = new Genome();
-            g.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
-            g.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
-            g.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 3);
-            g.BuildConnection(1, 3, 1, true, 4);
-            g.BuildConnection(2, 3, 1, true, 5);
-            g.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 6);
-            g.BuildConnection(6, 3, 1, true, 7);
-            g.BuildConnection(1, 6, 1, true, 8);
-            g.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 9);
-            g.BuildConnection(6, 9, 1, true, 10);
-            g.BuildConnection(1, 9, 1, true, 11);
-            g.BuildConnection(2, 9, 1, true, 11);
+            Genome p1 = new Genome();
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
+            p1.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
+            p1.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
+            p1.BuildConnection(1, 4, 1, true);
+            p1.BuildConnection(1, 5, 1, true);
+            p1.BuildConnection(3, 4, 1, true);
+            p1.BuildConnection(2, 5, 1, true);
+            p1.BuildConnection(5, 4, 1, true);
 
-            DrawGenome(forceGraphVisualizer1, g);
+            Genome p2 = new Genome();
+            p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
+            p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
+            p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
+            p2.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
+            p2.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
+            p2.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 6);
+
+            p2.BuildConnection(1, 4, 1, true);
+            p2.BuildConnection(1, 6, 1, true);
+            p2.BuildConnection(6, 4, 1, true);
+            p2.BuildConnection(2, 5, 1, true);
+            p2.BuildConnection(3, 5, 1, true);
+            p2.BuildConnection(5, 6, 1, true);
+            p2.BuildConnection(3, 4, 1, true);
+
+            Genome child = p1.Crossover(p2);
+
+
+
+            DrawGenome(forceGraphVisualizer1, p1);
+            DrawGenome(forceGraphVisualizer2, p2);
+            DrawGenome(forceGraphVisualizer3, child);
 
         }
 

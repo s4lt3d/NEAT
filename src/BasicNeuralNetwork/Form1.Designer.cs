@@ -30,24 +30,42 @@
         {
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.forceGraphVisualizer1 = new ForceDirected.ForceGraphVisualizer();
+            this.forceGraphVisualizer2 = new ForceDirected.ForceGraphVisualizer();
+            this.forceGraphVisualizer3 = new ForceDirected.ForceGraphVisualizer();
             this.SuspendLayout();
             // 
             // forceGraphVisualizer1
             // 
-            this.forceGraphVisualizer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.forceGraphVisualizer1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.forceGraphVisualizer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.forceGraphVisualizer1.Location = new System.Drawing.Point(12, 12);
             this.forceGraphVisualizer1.Name = "forceGraphVisualizer1";
-            this.forceGraphVisualizer1.Size = new System.Drawing.Size(719, 485);
+            this.forceGraphVisualizer1.Size = new System.Drawing.Size(302, 485);
             this.forceGraphVisualizer1.TabIndex = 1;
+            // 
+            // forceGraphVisualizer2
+            // 
+            this.forceGraphVisualizer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.forceGraphVisualizer2.Location = new System.Drawing.Point(320, 12);
+            this.forceGraphVisualizer2.Name = "forceGraphVisualizer2";
+            this.forceGraphVisualizer2.Size = new System.Drawing.Size(365, 485);
+            this.forceGraphVisualizer2.TabIndex = 2;
+            // 
+            // forceGraphVisualizer3
+            // 
+            this.forceGraphVisualizer3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.forceGraphVisualizer3.Location = new System.Drawing.Point(691, 12);
+            this.forceGraphVisualizer3.Name = "forceGraphVisualizer3";
+            this.forceGraphVisualizer3.Size = new System.Drawing.Size(334, 485);
+            this.forceGraphVisualizer3.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 509);
+            this.ClientSize = new System.Drawing.Size(1035, 509);
+            this.Controls.Add(this.forceGraphVisualizer3);
+            this.Controls.Add(this.forceGraphVisualizer2);
             this.Controls.Add(this.forceGraphVisualizer1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
@@ -60,6 +78,8 @@
         #endregion
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ForceDirected.ForceGraphVisualizer forceGraphVisualizer1;
+        private ForceDirected.ForceGraphVisualizer forceGraphVisualizer2;
+        private ForceDirected.ForceGraphVisualizer forceGraphVisualizer3;
     }
 }
 
