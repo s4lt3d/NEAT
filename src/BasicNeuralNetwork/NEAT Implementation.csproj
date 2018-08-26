@@ -71,6 +71,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Genome.cs" />
+    <Compile Include="Genus.cs" />
     <Compile Include="InnovationGenerator.cs" />
     <Compile Include="NEATSettings.cs" />
     <Compile Include="NodeGene.cs" />
