@@ -147,7 +147,7 @@ namespace NEATNeuralNetwork {
         /// </summary>
         public void MutateConnectionWeights() {
             foreach (KeyValuePair<int, ConnectionGene> g in Connections) {
-                if (r.NextDouble() > 0.5) {
+                if (r.NextDouble() < NEATSettings.WeightMutation) {
                     g.Value.Weight += (float)(2 * r.NextDouble() - 1);
                 }
             }
@@ -159,6 +159,9 @@ namespace NEATNeuralNetwork {
         /// </summary>
         public void AddConnectionMutation()
         {
+            if (r.NextDouble() > NEATSettings.ConnectionMutation)
+                return;
+
             int n1 = r.Next(0, Nodes.Count); // (from 0 and count -1)
             int n2 = r.Next(0, Nodes.Count);
 
@@ -197,8 +200,9 @@ namespace NEATNeuralNetwork {
         ///  receives the same weight as the old connection.
         /// </summary>
         /// <param name="r"></param>
-        public void AddNodeMutation()
-        {
+        public void AddNodeMutation() {
+            if (r.NextDouble() > NEATSettings.NodeMutation)
+                return;
             int c = r.Next(0, Connections.Count); // (from 0 and count -1)
             int newNodeId = BuildNode(NodeGene.NodeType.HIDDEN_NODE);
             
@@ -289,6 +293,36 @@ namespace NEATNeuralNetwork {
             }
 
             return offspring;
+        }
+
+        /// <summary>
+        /// Creates genome with only inputs and outputs connected. 
+        /// </summary>
+        /// <param name="numberOfInputs"></param>
+        /// <param name="numberOfOutputs"></param>
+        /// <returns></returns>
+        public static Genome CreateGenome(int numberOfInputs, int numberOfOutputs)
+        {
+            Genome g = new Genome();
+            List<int> inputs = new List<int>();
+            List<int> outputs = new List<int>();
+            inputs.Add(g.BuildNode(NodeGene.NodeType.BIAS_NODE));
+
+            for (int i = 0; i < numberOfInputs; i++)
+                inputs.Add(g.BuildNode(NodeGene.NodeType.INPUT_NODE));
+
+            for (int i = 0; i < numberOfOutputs; i++)
+                outputs.Add(g.BuildNode(NodeGene.NodeType.OUTPUT_NODE));
+
+            foreach (int i in inputs)
+            {
+                foreach (int o in outputs)
+                {
+                    g.BuildConnection(i, o, 0, true);
+                }
+            }
+
+            return g;
         }
     }
 }
