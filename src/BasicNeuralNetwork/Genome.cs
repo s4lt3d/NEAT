@@ -216,6 +216,15 @@ namespace NEATNeuralNetwork {
         }
 
         /// <summary>
+        /// A simple function to do all possible mutations in one go.
+        /// </summary>
+        public void Mutate() {
+            AddConnectionMutation();
+            AddNodeMutation();
+            MutateConnectionWeights();
+        }
+
+        /// <summary>
         /// A comparison of compatibiltiy before mating
         /// </summary>
         /// <param name="mate">The other genome to mate with</param>

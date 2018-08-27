@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NEATNeuralNetwork {
     class Species {
-        List<Genome> Genomes = new List<Genome>();
+        public List<Genome> Genomes = new List<Genome>();
 
         public double GetAverageFitness() {
             double fitness = 0;

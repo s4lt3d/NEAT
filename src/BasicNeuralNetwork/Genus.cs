@@ -16,9 +16,8 @@ namespace NEATNeuralNetwork
         public Genus() {
             instance = this;
         }
-
-        public void InitializeGenus(int numberOfInputs, int numberOfOutputs) {
-
+        
+        public Genus(int numberOfInputs, int numberOfOutputs) {
             Species s = new Species();
             for (int i = 0; i < NEATSettings.InitialPopulation; i++)
             {
@@ -26,6 +25,36 @@ namespace NEATNeuralNetwork
                 g.MutateConnectionWeights();
                 s.AddGenome(g);
             }
+
+            instance = this;
+        }
+
+        /// <summary>
+        /// Function to get all genomes to evaluate
+        /// </summary>
+        /// <returns>List of all genomes available</returns>
+        public List<Genome> Genomes() {
+            List<Genome> genomes = new List<Genome>();
+            foreach (Species s in Species) {
+                genomes.AddRange(s.Genomes);
+            }
+
+            return genomes;
+        }
+
+        /// <summary>
+        /// Gets the genome with the highest fitness
+        /// </summary>
+        /// <returns></returns>
+        public Genome BestGenome() {
+            return null;
+        }
+
+        /// <summary>
+        /// Genomes are compared, crossover, and speciated
+        /// </summary>
+        public void NewGeneration() {
+
         }
     }
 }
