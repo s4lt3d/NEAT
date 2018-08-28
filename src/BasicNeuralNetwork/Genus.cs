@@ -47,7 +47,9 @@ namespace NEATNeuralNetwork
         /// </summary>
         /// <returns></returns>
         public Genome BestGenome() {
-            return null;
+            List<Genome> genomes = Genomes();
+            genomes.Sort((o1, o2) => o1.Fitness.CompareTo(o2.Fitness));
+            return genomes[0];
         }
 
         /// <summary>
