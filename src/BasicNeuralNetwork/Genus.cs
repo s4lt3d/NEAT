@@ -53,6 +53,38 @@ namespace NEATNeuralNetwork
         }
 
         /// <summary>
+        /// Compares to all existing species. If it doesn't match any existing then we create a new species
+        /// </summary>
+        /// <param name="genome"></param>
+        public void AddToSpecies(Genome genome) {
+            foreach (Species species in Species) {
+                if (species.BestGenome.Compatibility(genome)) {
+                    species.AddGenome(genome);
+                    return;
+                }
+            }
+
+            Species newspecies = new Species();
+            newspecies.AddGenome(genome);
+        }
+
+        /// <summary>
+        /// Removes the worst of the species
+        /// </summary>
+        /// <param name="speciesToRemain"></param>
+        public void RemoveWeakestSpecies(int speciesToRemain = -1) {
+            if (speciesToRemain < 0) {
+                speciesToRemain = NEATSettings.NewGenerationSpecies;
+            }
+
+            Species.Sort((o1, o2) => o1.GetAverageFitness().CompareTo(o2.GetAverageFitness());
+
+            while (Species.Count > speciesToRemain) {
+                Species.RemoveAt(Species.Count - 1);
+            }
+        }
+
+        /// <summary>
         /// Genomes are compared, crossover, and speciated
         /// </summary>
         public void NewGeneration() {

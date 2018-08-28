@@ -9,6 +9,7 @@ namespace NEATNeuralNetwork {
         public List<Genome> Genomes = new List<Genome>();
 
         Genome bestGenome = new Genome();
+        public int Generations = 0;
 
         internal Genome BestGenome { get => bestGenome; }
 
