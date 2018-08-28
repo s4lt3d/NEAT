@@ -8,6 +8,10 @@ namespace NEATNeuralNetwork {
     class Species {
         public List<Genome> Genomes = new List<Genome>();
 
+        Genome bestGenome = new Genome();
+
+        internal Genome BestGenome { get => bestGenome; }
+
         public double GetAverageFitness() {
             double fitness = 0;
 
@@ -24,6 +28,7 @@ namespace NEATNeuralNetwork {
 
         void SortByFitness() {
             Genomes.Sort((g1, g2) =>  g1.Fitness.CompareTo(g2.Fitness));
+            bestGenome = Genomes[0];
         }
 
     }
