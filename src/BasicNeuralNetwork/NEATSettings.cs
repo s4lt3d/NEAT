@@ -20,6 +20,7 @@ namespace NEATNeuralNetwork {
         public static double Crossover = 0.75;
 
         public static int InitialPopulation = 50;
+        public static int NewGenerationSpecies = 20;
 
     }
 }
