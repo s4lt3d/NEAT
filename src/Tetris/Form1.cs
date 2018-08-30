@@ -20,13 +20,49 @@ namespace Tetris {
         private void Form1_Load(object sender, EventArgs e) {
             Image i = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = i;
-            tetris = new TetrisGame(12, 20, i);
+            tetris = new TetrisGame(10, 20, i);
             timer1.Enabled = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e) {
             tetris.Draw();
             pictureBox1.Invalidate();
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e) {
+
+        }
+
+        protected override bool IsInputKey(Keys keyData) {
+            switch (keyData) {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+                case Keys.Shift | Keys.Right:
+                case Keys.Shift | Keys.Left:
+                case Keys.Shift | Keys.Up:
+                case Keys.Shift | Keys.Down:
+                    return true;
+            }
+            return base.IsInputKey(keyData);
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e) {
+
+            switch (e.KeyCode) {
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                case Keys.Down:
+                    if (e.Shift) {
+
+                    }
+                    else {
+                    }
+                    break;
+            }
         }
     }
 }

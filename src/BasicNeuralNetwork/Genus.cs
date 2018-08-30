@@ -77,7 +77,7 @@ namespace NEATNeuralNetwork
                 speciesToRemain = NEATSettings.NewGenerationSpecies;
             }
 
-            Species.Sort((o1, o2) => o1.GetAverageFitness().CompareTo(o2.GetAverageFitness());
+            Species.Sort((o1, o2) => o1.GetAverageFitness().CompareTo(o2.GetAverageFitness()));
 
             while (Species.Count > speciesToRemain) {
                 Species.RemoveAt(Species.Count - 1);
