@@ -29,10 +29,6 @@ namespace Tetris {
             pictureBox1.Invalidate();
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e) {
-
-        }
-
         protected override bool IsInputKey(Keys keyData) {
             switch (keyData) {
                 case Keys.Right:
@@ -53,14 +49,16 @@ namespace Tetris {
 
             switch (e.KeyCode) {
                 case Keys.Left:
+                    tetris.Move(TetrisGame.Actions.MoveLeft);
+                    break;
                 case Keys.Right:
+                    tetris.Move(TetrisGame.Actions.MoveRight);
+                    break;
                 case Keys.Up:
+                    tetris.Move(TetrisGame.Actions.RotateLeft);
+                    break;
                 case Keys.Down:
-                    if (e.Shift) {
-
-                    }
-                    else {
-                    }
+                    tetris.Move(TetrisGame.Actions.MoveDown);
                     break;
             }
         }
