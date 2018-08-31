@@ -200,7 +200,6 @@ namespace Tetris {
 
         }
 
-
         private void RotatePiece(int direction = 0) {
             pieceRotation += direction;
             if (pieceRotation < 0)
@@ -235,6 +234,7 @@ namespace Tetris {
                     if (CheckMove() == false) {
                         pieceLocation = prevPosition;
                         pieceRotation = prevRotation;
+                        ClearRows();
                         GetNextPiece();
                     }
                     break;
@@ -245,6 +245,26 @@ namespace Tetris {
                 pieceRotation = prevRotation;
             }
 
+        }
+
+        private void ClearRows() {
+            int[,] state = GetGridState();
+
+            int count = 0;
+            for (int y = 0; y < height - 1; y++) {
+
+                count = 0;
+                for (int x = 1; x < width - 1; x++) {
+                    count += state[x, y];
+                }
+                if (count == width - 2) {
+                    ClearRows(y);
+                }
+            }
+        }
+
+        private void ClearRows(int y) {
+            
         }
 
         private void GetNextPiece() {
