@@ -271,9 +271,17 @@ namespace Tetris {
             }
         }
 
-        private void ClearRows(int y) {
+        private void ClearRows(int row) {
+            
             for (int x = 1; x < width - 1; x++) {
-                grid[x, y] = 0;
+                for (int y = row; y > 0; y--) {
+                    grid[x, y] = grid[x, y - 1];
+                }
+            }
+
+            for (int x = 1; x < width - 1; x++)
+            {
+                grid[x, 0] = 0;
             }
         }
 
