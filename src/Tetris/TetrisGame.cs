@@ -234,6 +234,7 @@ namespace Tetris {
                     if (CheckMove() == false) {
                         pieceLocation = prevPosition;
                         pieceRotation = prevRotation;
+                        SetPiece();
                         ClearRows();
                         GetNextPiece();
                     }
@@ -247,6 +248,13 @@ namespace Tetris {
 
         }
 
+        private void GetNextPiece() {
+            piece = r.Next(pieces.Count / 4);
+            pieceLocation.X = 6;
+            pieceLocation.Y = 2;
+            pieceRotation = 0;
+        }
+
         private void ClearRows() {
             int[,] state = GetGridState();
 
@@ -255,19 +263,21 @@ namespace Tetris {
 
                 count = 0;
                 for (int x = 1; x < width - 1; x++) {
-                    count += state[x, y];
+                    count += state[x, y] > 0 ? 1 : 0;
                 }
-                if (count == width - 2) {
+                if (count >= width - 2) {
                     ClearRows(y);
                 }
             }
         }
 
         private void ClearRows(int y) {
-            
+            for (int x = 1; x < width - 1; x++) {
+                grid[x, y] = 0;
+            }
         }
 
-        private void GetNextPiece() {
+        private void SetPiece() {
             int[,] p = pieces[piece * 4 + pieceRotation];
 
             for (int x = 0; x < 4; x++) {
@@ -277,10 +287,6 @@ namespace Tetris {
                 }
             }
 
-            piece = r.Next(pieces.Count / 4);
-            pieceLocation.X = 6;
-            pieceLocation.Y = 2;
-            pieceRotation = 0;
         }
 
         public bool CheckMove() {
