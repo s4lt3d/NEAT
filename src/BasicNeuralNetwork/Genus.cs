@@ -19,12 +19,13 @@ namespace NEATNeuralNetwork
         
         public Genus(int numberOfInputs, int numberOfOutputs) {
             Species s = new Species();
-            for (int i = 0; i < NEATSettings.IdealPopulation; i++)
+            for (int i = 0; i < NEATSettings.IdealSpeciesPopulation; i++)
             {
                 Genome g = Genome.CreateGenome(numberOfInputs, numberOfOutputs);
                 g.MutateConnectionWeights();
                 s.AddGenome(g);
             }
+            Species.Add(s); // start with one species
 
             instance = this;
         }
@@ -54,7 +55,7 @@ namespace NEATNeuralNetwork
         /// <returns></returns>
         public Genome BestGenome() {
             List<Genome> genomes = Genomes();
-            genomes.Sort((o1, o2) => o1.Fitness.CompareTo(o2.Fitness));
+            genomes.Sort((o1, o2) => o2.Fitness.CompareTo(o1.Fitness));
             return genomes[0];
         }
 
@@ -75,18 +76,24 @@ namespace NEATNeuralNetwork
         }
 
         /// <summary>
-        /// Removes the worst of the species
+        /// Removes the worst of the species. Gives species a number of a generations to optimize
         /// </summary>
         /// <param name="speciesToRemain"></param>
         public void RemoveWeakestSpecies(int speciesToRemain = -1) {
             if (speciesToRemain < 0) {
-                speciesToRemain = NEATSettings.NewGenerationSpecies;
+                speciesToRemain = NEATSettings.MaximumSpecies;
             }
 
-            Species.Sort((o1, o2) => o1.GetAverageFitness().CompareTo(o2.GetAverageFitness()));
+            Species.Sort((o1, o2) => o2.GetAverageFitness().CompareTo(o1.GetAverageFitness()));
 
-            while (Species.Count > speciesToRemain) {
-                Species.RemoveAt(Species.Count - 1);
+            int SpeciesToRemove = Species.Count - speciesToRemain;
+
+            if (SpeciesToRemove < 1)
+                return;
+
+            for(int i = 0; i < SpeciesToRemove; i++) {
+                if (Species[Species.Count - 1].Generations > NEATSettings.MinimumGenerations)
+                    Species.RemoveAt(Species.Count - 1);
             }
         }
 
@@ -96,9 +103,45 @@ namespace NEATNeuralNetwork
         public void NewGeneration() {
             generationNumber++;
 
+           
+            if (generationNumber == 1) {
+                foreach (Genome g in Genomes()) {
+                    g.Mutate();
+                }
+                return;
+            }
+            
+            RemoveWeakestSpecies();
 
+            // no need to go through new species which are added in the loop
+            int speciesCount = Species.Count;
+            
+            for(int i =0; i < speciesCount; i++) {
+                Species s = Species[i];
+                s.Generations++;
+                s.TrimSpecies(false);
 
+                List<Genome> children = new List<Genome>();
+                // spring time in species world
+                foreach (Genome g1 in s.Genomes)
+                {
+                    Genome g2 = s.BestGenome;
+                    Genome child = g1.Crossover(g2);
+                    if (child.IsCompatibility(s.BestGenome))
+                        children.Add(child);
+                    else {
+                        Species s2 = new Species();
+                        s2.AddGenome(child);
+                        Species.Add(s2);
+                    }
+                }
+                s.Genomes.AddRange(children);
+            }
+
+            foreach (Genome g in Genomes())
+            {
+                g.Mutate();
+            }
         }
-        
     }
 }

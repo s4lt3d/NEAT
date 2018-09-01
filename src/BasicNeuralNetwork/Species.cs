@@ -28,12 +28,13 @@ namespace NEATNeuralNetwork {
         }
 
         void SortByFitness() {
-            Genomes.Sort((g1, g2) =>  g1.Fitness.CompareTo(g2.Fitness));
+            Genomes.Sort((g1, g2) =>  g2.Fitness.CompareTo(g1.Fitness));
             bestGenome = Genomes[0];
         }
 
         void SortByAdjustedFitness() {
-            Genomes.Sort((g1, g2) => GetAdjustedFitness(g1).CompareTo(GetAdjustedFitness(g2)));
+            Genomes.Sort((g1, g2) => GetAdjustedFitness(g2).CompareTo(GetAdjustedFitness(g1)));
+            bestGenome = Genomes[0];
         }
 
         double GetAdjustedFitness(Genome g) {
@@ -53,7 +54,7 @@ namespace NEATNeuralNetwork {
             return g.Fitness / Math.Min(1.0f, sharingTotal); // no division by zero
         }
 
-        public void TrimSpecies(bool one)
+        public void TrimSpecies(bool one = false)
         {
             if (one == true)
             {  // highlander rules
@@ -66,7 +67,7 @@ namespace NEATNeuralNetwork {
             {
                 SortByAdjustedFitness();
 
-                while (Genomes.Count > NEATSettings.IdealPopulation)
+                while (Genomes.Count > NEATSettings.NewGenerationSpecies)
                 {
                     Genomes.RemoveAt(Genomes.Count - 1);
                 }

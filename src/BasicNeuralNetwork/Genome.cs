@@ -36,8 +36,8 @@ namespace NEATNeuralNetwork {
                 outputNodes.Add(id);
             }
 
-            inputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
-            outputNodes.Sort((o1, o2) => Nodes[o1].Innovation.CompareTo(Nodes[o2].Innovation));
+            inputNodes.Sort((o1, o2) => Nodes[o2].Innovation.CompareTo(Nodes[o1].Innovation));
+            outputNodes.Sort((o1, o2) => Nodes[o2].Innovation.CompareTo(Nodes[o1].Innovation));
             return id;
         }
 
@@ -162,14 +162,14 @@ namespace NEATNeuralNetwork {
             if (r.NextDouble() > NEATSettings.ConnectionMutation)
                 return;
 
-            int n1 = r.Next(0, Nodes.Count); // (from 0 and count -1)
-            int n2 = r.Next(0, Nodes.Count);
+            int n1 = Nodes.ElementAt(r.Next(0, Nodes.Count)).Value.Innovation; // (from 0 and count -1)
+            int n2 = Nodes.ElementAt(r.Next(0, Nodes.Count)).Value.Innovation;
 
             int k = 0; // prevents runaway
             while (k++ < 64)
             {
-                n1 = r.Next(0, Nodes.Count);
-                n2 = r.Next(0, Nodes.Count);
+                n1 = Nodes.ElementAt(r.Next(0, Nodes.Count)).Value.Innovation; // (from 0 and count -1)
+                n2 = Nodes.ElementAt(r.Next(0, Nodes.Count)).Value.Innovation;
 
                 // cases which are not allowed.
                 // can't have existing connection
@@ -205,11 +205,11 @@ namespace NEATNeuralNetwork {
                 return;
             int c = r.Next(0, Connections.Count); // (from 0 and count -1)
             int newNodeId = BuildNode(NodeGene.NodeType.HIDDEN_NODE);
-            
-            Connections[c].Expressed = false;
-            int oldInNode = Connections[c].InNode;
-            int oldOutNode = Connections[c].OutNode;
-            double oldWeight = Connections[c].Weight;
+            ConnectionGene connection = Connections.ElementAt(c).Value;
+            connection.Expressed = false;
+            int oldInNode = connection.InNode;
+            int oldOutNode = connection.OutNode;
+            double oldWeight = connection.Weight;
 
             BuildConnection(oldInNode, newNodeId, 1, true);
             BuildConnection(newNodeId, oldOutNode, oldWeight, true);
@@ -247,10 +247,10 @@ namespace NEATNeuralNetwork {
             for (int i = 0; i < Connections.Count; i++)
             {
                 bool found = false;
-                ConnectionGene myGene = Connections[i];
+                ConnectionGene myGene = Connections.ElementAt(i).Value;
                 for (int j = 0; j < mate.Connections.Count; j++)
                 {
-                    ConnectionGene mateGene = mate.Connections[j];
+                    ConnectionGene mateGene = mate.Connections.ElementAt(j).Value;
                     if (mateGene.Innovation == myGene.Innovation)
                     {
                         found = true;
