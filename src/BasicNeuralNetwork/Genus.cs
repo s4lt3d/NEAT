@@ -18,13 +18,10 @@ namespace NEATNeuralNetwork
         }
         
         public Genus(int numberOfInputs, int numberOfOutputs) {
-            Species s = new Species();
-            for (int i = 0; i < NEATSettings.IdealSpeciesPopulation; i++)
-            {
-                Genome g = Genome.CreateGenome(numberOfInputs, numberOfOutputs);
-                g.MutateConnectionWeights();
-                s.AddGenome(g);
-            }
+            Species s = new Species();            
+            Genome g = Genome.CreateGenome(numberOfInputs, numberOfOutputs);
+            g.MutateConnectionWeights();
+            s.AddGenome(g);
             Species.Add(s); // start with one species
 
             instance = this;
@@ -121,25 +118,25 @@ namespace NEATNeuralNetwork
                 s.Generations++;
                 s.TrimSpecies(false);
 
-                List<Genome> children = new List<Genome>();
-                // spring time in species world
-                foreach (Genome g1 in s.Genomes)
-                {
-                    Genome g2 = s.BestGenome;
-                    Genome child = g1.Crossover(g2);
-                    if (child.IsCompatibility(s.BestGenome))
-                        children.Add(child);
-                    else {
-                        Species s2 = new Species();
-                        s2.AddGenome(child);
-                        Species.Add(s2);
-                    }
+                Genome g1 = s.BestGenome;
+                Genome g2 = g1;
+                if (s.Genomes.Count > 1) {
+                    g2 = s.Genomes[1];
                 }
-                s.Genomes.AddRange(children);
+                Genome child = g1.Crossover(g2);
+                if (child.IsCompatibility(s.BestGenome))
+                    s.AddGenome(child);
+                else {
+                    Species s2 = new Species();
+                    s2.AddGenome(child);
+                    Species.Add(s2);
+                }
             }
 
             foreach (Genome g in Genomes())
             {
+                if (g == BestGenome())
+                    continue;
                 g.Mutate();
             }
         }

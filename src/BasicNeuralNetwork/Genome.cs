@@ -341,5 +341,9 @@ namespace NEATNeuralNetwork {
 
             return g;
         }
+
+        public override string ToString() {
+            return fitness.ToString();
+        }
     }
 }

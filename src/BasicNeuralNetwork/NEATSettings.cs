@@ -11,9 +11,9 @@ namespace NEATNeuralNetwork {
         public static double CompatibilityDeltaWeights = 0.4;
         public static double CompatibilityDeltaThreshold = 1;
 
-        public static double WeightMutation = 0.25;
-        public static double ConnectionMutation = 2;
-        public static double NodeMutation = 0.5;
+        public static double WeightMutation = 0.5;
+        public static double ConnectionMutation = 0.005;
+        public static double NodeMutation = 0.001;
         public static double EnableMutation = 0.2;
         public static double DisableMutation = 0.4;
         public static double Perturbation = 0.9;

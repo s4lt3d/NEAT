@@ -15,38 +15,16 @@ namespace NEATNeuralNetwork {
             InitializeComponent();
 
         }
-        
+
+        Genus pool = new Genus(2, 1);
+
+        Random r = new Random();
         private void Form1_Load(object sender, EventArgs e)
         {
 
             Genus pool = new Genus(2, 1);
-
-            Random r = new Random();
-
-            for (int j = 0; j < 10; j++) {
-                pool.NewGeneration();
-                foreach (Genome g in pool.Genomes()) {
-                    double averageScore = 0;
-                    for (int i = 0; i < 20; i++)
-                    {
-                        int a = r.Next(0, 2);
-                        int b = r.Next(0, 2);
-                        float c = a ^ b;
-
-                        double[] outputs = g.Evaluate(new double[] { a, b });
-
-                        averageScore += Math.Abs(c - outputs[0]);
-
-                    }
-                    if (averageScore == 0) // perfect score
-                        averageScore = double.MaxValue;
-                    else
-                        averageScore = 1 / averageScore;
-
-                    g.Fitness = averageScore;
-                }
-            }
             
+
 
 
 
@@ -90,6 +68,41 @@ namespace NEATNeuralNetwork {
             foreach (KeyValuePair<int, ConnectionGene> connection in genome.Connections) {
                 graph.AddEdge(connection.Value.InNode, connection.Value.OutNode);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+
+            for (int j = 0; j < 100; j++) {
+                pool.NewGeneration();
+                foreach (Genome g in pool.Genomes()) {
+                    double averageScore = 0;
+                    for (int i = 0; i < 2000; i++) {
+                        int a = r.Next(0, 2);
+                        int b = r.Next(0, 2);
+                        float c = a ^ b;
+
+                        double[] outputs = g.Evaluate(new double[] { a, b });
+
+                        averageScore += Math.Abs(c - outputs[0]);
+
+                    }
+                    if (averageScore == 0) // perfect score
+                        averageScore = double.MaxValue;
+                    else
+                        averageScore = 1 / averageScore;
+
+                    g.Fitness = averageScore;
+                }
+            }
+
+            Genome best = pool.BestGenome();
+            textBoxFitness.Text = best.Fitness.ToString();
+            DrawGenome(forceGraphVisualizer1, best);
+
+        }
+
+        private void textBoxFitness_TextChanged(object sender, EventArgs e) {
+
         }
     }
 }
