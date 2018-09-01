@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace NEATNeuralNetwork {
     public class NEATSettings {
-        public static double CompatibilityThreshold = 1;
-        public static double DeltaDisjoint = 2;
-        public static double DeltaWeights = 0.4;
-        public static double DeltaThreshold = 1;
+        public static double CompatibilityDistance = 1;
+        public static double CompatibilityDeltaDisjoint = 2;
+        public static double CompatibilityDeltaWeights = 0.4;
+        public static double CompatibilityDeltaThreshold = 1;
 
         public static double WeightMutation = 0.25;
         public static double ConnectionMutation = 2;
@@ -21,6 +21,8 @@ namespace NEATNeuralNetwork {
 
         public static int InitialPopulation = 50;
         public static int NewGenerationSpecies = 20;
+
+        
 
     }
 }

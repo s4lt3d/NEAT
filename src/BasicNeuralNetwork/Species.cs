@@ -32,5 +32,19 @@ namespace NEATNeuralNetwork {
             bestGenome = Genomes[0];
         }
 
+        void TrimSpecies(bool one)
+        {
+            SortByFitness();
+
+            if (one == true){
+                Genomes.Clear();
+                Genomes.Add(BestGenome);
+                return;
+            }
+
+            while(Genomes.Count > NEATSettings.InitialPopulation) { 
+                Genomes.RemoveAt(Genomes.Count - 1);
+            }
+        }
     }
 }

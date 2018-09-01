@@ -42,6 +42,12 @@ namespace NEATNeuralNetwork
             return genomes;
         }
 
+        public void ReduceSpecies(bool one = false) {
+            foreach (Species species in Species) {
+                species.TrimSpecies(one);
+            }
+        }
+
         /// <summary>
         /// Gets the genome with the highest fitness
         /// </summary>
@@ -58,7 +64,7 @@ namespace NEATNeuralNetwork
         /// <param name="genome"></param>
         public void AddToSpecies(Genome genome) {
             foreach (Species species in Species) {
-                if (species.BestGenome.Compatibility(genome)) {
+                if (species.BestGenome.IsCompatibility(genome)) {
                     species.AddGenome(genome);
                     return;
                 }

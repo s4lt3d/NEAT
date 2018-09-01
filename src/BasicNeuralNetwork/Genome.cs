@@ -229,7 +229,14 @@ namespace NEATNeuralNetwork {
         /// </summary>
         /// <param name="mate">The other genome to mate with</param>
         /// <returns></returns>
-        public bool Compatibility(Genome mate)
+        public bool IsCompatibility(Genome mate)
+        {
+            double delta = Compatibility(mate);
+
+            return delta < NEATSettings.CompatibilityDeltaDisjoint;
+        }
+
+        public double Compatibility(Genome mate)
         {
             int disjoint = 0;
             double weightDifference = 0;
@@ -237,10 +244,12 @@ namespace NEATNeuralNetwork {
             int matches = 0;
 
             int disjointGenes = 0;
-            for(int i = 0; i < Connections.Count; i++) {
+            for (int i = 0; i < Connections.Count; i++)
+            {
                 bool found = false;
                 ConnectionGene myGene = Connections[i];
-                for(int j = 0; j < mate.Connections.Count; j++) {
+                for (int j = 0; j < mate.Connections.Count; j++)
+                {
                     ConnectionGene mateGene = mate.Connections[j];
                     if (mateGene.Innovation == myGene.Innovation)
                     {
@@ -258,9 +267,8 @@ namespace NEATNeuralNetwork {
 
             weightDifferenceAvg = weightDifference / matches;
 
-            double delta = (double)disjoint / Math.Max(mate.Connections.Count, Connections.Count) + weightDifferenceAvg;
-
-            return delta < NEATSettings.CompatibilityThreshold;
+            double delta = NEATSettings.CompatibilityDeltaDisjoint * ((double)disjoint / Math.Max(mate.Connections.Count, Connections.Count)) + NEATSettings.CompatibilityDeltaWeights * weightDifferenceAvg;
+            return delta;
         }
 
         /// <summary>
