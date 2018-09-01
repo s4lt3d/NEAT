@@ -19,7 +19,7 @@ namespace NEATNeuralNetwork
         
         public Genus(int numberOfInputs, int numberOfOutputs) {
             Species s = new Species();
-            for (int i = 0; i < NEATSettings.InitialPopulation; i++)
+            for (int i = 0; i < NEATSettings.IdealPopulation; i++)
             {
                 Genome g = Genome.CreateGenome(numberOfInputs, numberOfOutputs);
                 g.MutateConnectionWeights();

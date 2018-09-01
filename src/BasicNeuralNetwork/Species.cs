@@ -32,7 +32,7 @@ namespace NEATNeuralNetwork {
             bestGenome = Genomes[0];
         }
 
-        void TrimSpecies(bool one)
+        public void TrimSpecies(bool one)
         {
             SortByFitness();
 
@@ -42,7 +42,7 @@ namespace NEATNeuralNetwork {
                 return;
             }
 
-            while(Genomes.Count > NEATSettings.InitialPopulation) { 
+            while(Genomes.Count > NEATSettings.IdealPopulation) { 
                 Genomes.RemoveAt(Genomes.Count - 1);
             }
         }
