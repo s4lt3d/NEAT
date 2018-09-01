@@ -167,7 +167,8 @@ namespace ForceDirected {
         /// <param name="b">A node to connect.</param>
         public void Connect(Node a, Node b) {
             if (a == b)
-                throw new ArgumentException("Cannot connect a node to itself.");
+                return;
+                //throw new ArgumentException("Cannot connect a node to itself.");
             lock (_nodeLock) {
                 a.Connected.Add(b);
                 b.Connected.Add(a);

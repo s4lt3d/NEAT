@@ -50,41 +50,33 @@ namespace NEATNeuralNetwork {
 
 
 
-            //Genome p1 = new Genome();
-            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
-            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
-            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
-            //p1.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
-            //p1.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
-            //p1.BuildConnection(1, 4, 1, true);
-            //p1.BuildConnection(1, 5, 1, true);
-            //p1.BuildConnection(3, 4, 1, true);
-            //p1.BuildConnection(2, 5, 1, true);
-            //p1.BuildConnection(5, 4, 1, true);
+            Genome p1 = new Genome();
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
+            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
+            p1.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
+            p1.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
+            p1.BuildConnection(1, 4, 1, true);
+            p1.BuildConnection(1, 5, 1, true);
+            p1.BuildConnection(3, 4, 1, true);
+            p1.BuildConnection(2, 5, 1, true);
+            p1.BuildConnection(5, 4, 1, true);
 
-            //Genome p2 = new Genome();
-            //p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
-            //p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
-            //p2.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
-            //p2.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
-            //p2.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
-            //p2.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 6);
+            Genome p2 = p1.Crossover(p1);
 
-            //p2.BuildConnection(1, 4, 1, true);
-            //p2.BuildConnection(1, 6, 1, true);
-            //p2.BuildConnection(6, 4, 1, true);
-            //p2.BuildConnection(2, 5, 1, true);
-            //p2.BuildConnection(3, 5, 1, true);
-            //p2.BuildConnection(5, 6, 1, true);
-            //p2.BuildConnection(3, 4, 1, true);
+            p2.Mutate();
 
-            //Genome child = p1.Crossover(p2);
+            Genome child = p1.Crossover(p2);
 
+            DrawGenome(forceGraphVisualizer1, p1);
+            DrawGenome(forceGraphVisualizer2, p2);
+            DrawGenome(forceGraphVisualizer3, child);
 
+            Species s = new Species();
 
-            //DrawGenome(forceGraphVisualizer1, p1);
-            //DrawGenome(forceGraphVisualizer2, p2);
-            //DrawGenome(forceGraphVisualizer3, child);
+            s.AddGenome(p1);
+            s.AddGenome(p2);
+            s.AddGenome(child);
 
         }
 
