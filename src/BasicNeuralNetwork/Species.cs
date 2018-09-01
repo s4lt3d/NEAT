@@ -32,18 +32,44 @@ namespace NEATNeuralNetwork {
             bestGenome = Genomes[0];
         }
 
-        public void TrimSpecies(bool one)
-        {
-            SortByFitness();
+        void SortByAdjustedFitness() {
+            Genomes.Sort((g1, g2) => GetAdjustedFitness(g1).CompareTo(GetAdjustedFitness(g2)));
+        }
 
-            if (one == true){
-                Genomes.Clear();
-                Genomes.Add(BestGenome);
-                return;
+        double GetAdjustedFitness(Genome g) {
+
+            int sharingTotal = 0;
+
+            foreach (Genome other in Genomes) {
+                if (other == g)
+                    continue;
+
+                double compatibility = g.Compatibility(other);
+                if (compatibility <= NEATSettings.CompatibilityDeltaThreshold) {
+                    sharingTotal++;
+                }
             }
 
-            while(Genomes.Count > NEATSettings.IdealPopulation) { 
-                Genomes.RemoveAt(Genomes.Count - 1);
+            return g.Fitness / Math.Min(1.0f, sharingTotal); // no division by zero
+        }
+
+        public void TrimSpecies(bool one)
+        {
+            if (one == true)
+            {  // highlander rules
+                SortByFitness();
+
+                Genomes.Clear();
+                Genomes.Add(BestGenome);
+            }
+            else
+            {
+                SortByAdjustedFitness();
+
+                while (Genomes.Count > NEATSettings.IdealPopulation)
+                {
+                    Genomes.RemoveAt(Genomes.Count - 1);
+                }
             }
         }
     }

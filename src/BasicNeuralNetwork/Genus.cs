@@ -94,7 +94,11 @@ namespace NEATNeuralNetwork
         /// Genomes are compared, crossover, and speciated
         /// </summary>
         public void NewGeneration() {
+            generationNumber++;
+
+
 
         }
+        
     }
 }
