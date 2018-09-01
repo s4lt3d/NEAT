@@ -19,7 +19,7 @@ namespace NEATNeuralNetwork {
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            /*Genus pool = new Genus(2, 1);
+            Genus pool = new Genus(2, 1);
 
             Random r = new Random();
 
@@ -29,8 +29,8 @@ namespace NEATNeuralNetwork {
                     double averageScore = 0;
                     for (int i = 0; i < 20; i++)
                     {
-                        int a = r.Next(0, 1);
-                        int b = r.Next(0, 1);
+                        int a = r.Next(0, 2);
+                        int b = r.Next(0, 2);
                         float c = a ^ b;
 
                         double[] outputs = g.Evaluate(new double[] { a, b });
@@ -46,37 +46,38 @@ namespace NEATNeuralNetwork {
                     g.Fitness = averageScore;
                 }
             }
-            */
+            
 
 
 
-            Genome p1 = new Genome();
-            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
-            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
-            p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
-            p1.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
-            p1.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
-            p1.BuildConnection(1, 4, 1, true);
-            p1.BuildConnection(1, 5, 1, true);
-            p1.BuildConnection(3, 4, 1, true);
-            p1.BuildConnection(2, 5, 1, true);
-            p1.BuildConnection(5, 4, 1, true);
+            //Genome p1 = new Genome();
+            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 1);
+            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 2);
+            //p1.BuildNode(NodeGene.NodeType.INPUT_NODE, 3);
+            //p1.BuildNode(NodeGene.NodeType.OUTPUT_NODE, 4);
+            //p1.BuildNode(NodeGene.NodeType.HIDDEN_NODE, 5);
+            //p1.BuildConnection(1, 4, 1, true);
+            //p1.BuildConnection(1, 5, 1, true);
+            //p1.BuildConnection(3, 4, 1, true);
+            //p1.BuildConnection(2, 5, 1, true);
+            //p1.BuildConnection(5, 4, 1, true);
 
-            Genome p2 = p1.Crossover(p1);
+            //Genome p2 = p1.Crossover(p1);
 
-            p2.Mutate();
+            //p2.Mutate();
 
-            Genome child = p1.Crossover(p2);
+            //Genome child = p1.Crossover(p2);
 
-            DrawGenome(forceGraphVisualizer1, p1);
-            DrawGenome(forceGraphVisualizer2, p2);
-            DrawGenome(forceGraphVisualizer3, child);
+            //DrawGenome(forceGraphVisualizer1, p1);
+            //DrawGenome(forceGraphVisualizer2, p2);
+            //DrawGenome(forceGraphVisualizer3, child);
 
-            Species s = new Species();
+            //Species s = new Species();
 
-            s.AddGenome(p1);
-            s.AddGenome(p2);
-            s.AddGenome(child);
+            //s.AddGenome(p1);
+            //s.AddGenome(p2);
+            //s.AddGenome(child);
+
 
         }
 
